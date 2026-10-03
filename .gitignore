@@ -1,0 +1,34 @@
+### Project-specific ###
+lab/HELP.md
+lab/target/
+lab/.mvn/wrapper/maven-wrapper.jar
+!lab/src/main/**/target/
+!lab/src/test/**/target/
+
+### STS ###
+lab/.apt_generated
+lab/.classpath
+lab/.factorypath
+lab/.project
+lab/.settings/
+lab/.springBeans
+lab/.sts4-cache
+
+### IntelliJ IDEA ###
+lab/.idea/
+lab/*.iws
+lab/*.iml
+lab/*.ipr
+
+### NetBeans ###
+lab/nbproject/private/
+lab/nbbuild/
+lab/dist/
+lab/nbdist/
+lab/.nb-gradle/
+lab/build/
+!lab/src/main/**/build/
+!lab/src/test/**/build/
+
+### VS Code ###
+lab/.vscode/
