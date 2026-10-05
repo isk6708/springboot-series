@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class NiiseDemoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(NiiseDemoApplication.class, args);
+		//SpringApplication.run(NiiseDemoApplication.class, args);
+		Student student = new Student(new Grades());
+		student.retrieveGrades();
 	}
 
 }
