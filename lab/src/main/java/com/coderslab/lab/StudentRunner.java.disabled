@@ -1,0 +1,32 @@
+package com.coderslab.lab;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import com.coderslab.lab.lab1.Student;
+import com.coderslab.lab.lab1.Grades;
+
+@Component
+public class StudentRunner implements CommandLineRunner {
+
+    private final Student student;
+
+    public StudentRunner(Student student) {
+        this.student = student;
+    }
+
+    // private final Student student;
+    // private final Grades grades;
+
+    // public StudentRunner() {
+    //     this.grades = new Grades();
+
+    //     this.student = new Student();
+    //     this.student.setGrades(grades);
+    // }
+
+    @Override
+    public void run(String... args) {
+        student.retrieveGrades();
+    }
+}
