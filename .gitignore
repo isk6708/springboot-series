@@ -1,0 +1,37 @@
+# Project specific files
+niise-demo/HELP.md
+niise-demo/target/
+niise-demo/.mvn/wrapper/maven-wrapper.jar
+!**/niise-demo/src/main/**/target/
+!**/niise-demo/src/test/**/target/
+
+### STS ###
+niise-demo/.apt_generated
+niise-demo/.classpath
+niise-demo/.factorypath
+niise-demo/.project
+niise-demo/.settings
+niise-demo/.springBeans
+niise-demo/.sts4-cache
+
+### IntelliJ IDEA ###
+# Kept global so it catches .idea folders at any level if you open the root folder
+.idea/
+niise-demo/.idea/
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/niise-demo/nbproject/private/
+/niise-demo/nbbuild/
+/niise-demo/dist/
+/niise-demo/nbdist/
+/niise-demo/.nb-gradle/
+niise-demo/build/
+!**/niise-demo/src/main/**/build/
+!**/niise-demo/src/test/**/build/
+
+### VS Code ###
+.vscode/
+niise-demo/.vscode/

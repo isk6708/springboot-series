@@ -1,0 +1,41 @@
+GitHub.com/isk6708
+--------------
+Day 1 - Beginner
+
+1. java - beginner
+2. vscode - IntelliJ - beginner
+3. Database - MySQL, postgres - beginner
+4. Maven - beginner
+5. git - beginner
+6. Postman / Curl / Swagger-UI - 
+6. Docker - advanced
+
+Buka command prompt
+
+java -version
+
+To create my first springboot project
+pre-requisite - Java - advantage
+
+niisedanial
+ - passport
+ - pass
+ - keselamatan
+ - pengguna
+ - pentabir
+
+spring initialzr
+
+
+spring boot - Framework - Java
+
+
+
+
+
+.\mvnw.cmd spring-boot:run
+
+
+
+
+
