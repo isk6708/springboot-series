@@ -35,3 +35,4 @@ niise-demo/build/
 ### VS Code ###
 .vscode/
 niise-demo/.vscode/
+niise-demo/niise_local.db
