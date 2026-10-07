@@ -1,45 +1,43 @@
 package my.gov.imi.niise_demo;
 
+import my.gov.imi.niise_demo.Passport; // Your Entity class
+import my.gov.imi.niise_demo.PassportRepository;
+import my.gov.imi.niise_demo.exception.NotFoundException; // Assuming you create this custom exception
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Optional;
 
-@Service 
+@AllArgsConstructor
+@Service
 public class PassportService {
 
-    private final PassportRepository passportRepository;
+    private final PassportRepository repo;
 
-    // Use constructor-based injection (Industry Standard recommendation)
-    public PassportService(PassportRepository passportRepository) {
-        this.passportRepository = passportRepository;
+    public Iterable<Passport> findAllPassports() {
+        return repo.findAll();
     }
 
-    /**
-     * Retrieve all passport records from the SQLite database.
-     */
-    public List<Passport> getAllPassports() {
-        return passportRepository.findAll();
+    public Passport findPassportById(int id) {
+        return findOrThrow(id);
     }
 
-    
-    /**
-     * Find a single passport by its ID.
-     */
-    public Optional<Passport> getPassportById(int id) {
-        return passportRepository.findById(id);
+    public void removePassportById(int id) {
+        repo.deleteById(id);
     }
 
-    /**
-     * Create or save a new passport record.
-     */
-    public Passport createPassport(Passport passport) {
-        return passportRepository.save(passport);
+    public Passport addPassport(Passport passport) {
+        return repo.save(passport);
     }
 
-    /**
-     * Delete a passport record by its ID.
-     */
-    public void deletePassport(int id) {
-        passportRepository.deleteById(id);
+    public void updatePassport(int id, Passport passport) {
+        findOrThrow(id);
+        repo.save(passport);
+    }
+
+    private Passport findOrThrow(final int id) {
+        return repo
+                .findById(id)
+                .orElseThrow(
+                        () -> new NotFoundException("Passport by id " + id + " was not found")
+                );
     }
 }

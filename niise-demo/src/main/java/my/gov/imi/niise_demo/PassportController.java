@@ -5,9 +5,7 @@ import my.gov.imi.niise_demo.Passport; // Your Entity class
 import my.gov.imi.niise_demo.PassportService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
 import java.util.List;
@@ -57,14 +55,10 @@ public class PassportController {
             @PathVariable("id") int id,
             @Valid @RequestBody PassportDto passportDto
     ) {
-        if (id != passportDto.getId()) {
-            throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST,
-                "id does not match"
-            );
-        }
-
+        // Convert to entity and manually attach the ID from the path variable
         var passportEntity = convertToEntity(passportDto);
+        passportEntity.setId(id); 
+        
         service.updatePassport(id, passportEntity);
     }
 
@@ -72,8 +66,7 @@ public class PassportController {
         return mapper.map(entity, PassportDto.class);
     }
 
-    private PassportEntity convertToEntity(PassportDto dto) {
-        // Renamed method to match entity name syntax contextually
+    private Passport convertToEntity(PassportDto dto) {
         return mapper.map(dto, Passport.class);
     }
 }
