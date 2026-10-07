@@ -17,10 +17,10 @@ public class NiiseDemoApplication {
 		PassportService passportService = context.getBean(PassportService.class);
         
         // 3. Create a test passport record and save it
-        Passport testPassport = new Passport("Hazieq", "010101-14-1234");
+        //Passport testPassport = new Passport("Hazieq", "010101-14-1234");
         // repository.save(testPassport);
-		passportService.createPassport(testPassport);
-        System.out.println(">>> Success: Saved test passport to SQLite database!");
+		//passportService.createPassport(testPassport);
+        //System.out.println(">>> Success: Saved test passport to SQLite database!");
 
         // 4. Query the database to verify it was written correctly
         // List<Passport> allPassports = repository.findAll();
