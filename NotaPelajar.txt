@@ -1,5 +1,6 @@
 GitHub.com/isk6708
 github.com/isk6708/springboot-series
+http://jomdemy.com
 --------------
 Day 1 - Beginner
 
@@ -57,3 +58,7 @@ curl -X POST http://localhost:8006/api/v1/anti-heroes -H "Content-Type: applicat
 
 
 
+
+
+
+curl -X POST http://localhost:8005/api/v1/passports -H "Content-Type: application/json" -d "{\"fullname\":\"Ahmad Razak\",\"icno\":\"950101145679\"}"
