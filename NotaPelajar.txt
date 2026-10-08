@@ -46,6 +46,16 @@ id - primary key - int
 fullname - varchar(255)
 icno - varchar(255)
 
+
+pengguna
+id - primary key - int
+nama - varchar(255)
+icon - varchar(255)
+hash_password - varchar(255)
+email - varchar(255)
+
+
+
 https://github.com/PacktPublishing/Spring-Boot-and-Angular
 
 http://localhost:8006/api/v1/anti-heroes
@@ -56,9 +66,6 @@ curl -X POST http://localhost:8006/api/v1/anti-heroes -H "Content-Type: applicat
 
 
 
-
-
-
-
-
 curl -X POST http://localhost:8005/api/v1/passports -H "Content-Type: application/json" -d "{\"fullname\":\"Ahmad Razak\",\"icno\":\"950101145679\"}"
+
+curl -X 'GET' 'http://localhost:8005/api/v1/passports' -H 'accept: */*'
