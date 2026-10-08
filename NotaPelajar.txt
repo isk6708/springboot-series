@@ -50,7 +50,7 @@ icno - varchar(255)
 pengguna
 id - primary key - int
 nama - varchar(255)
-icon - varchar(255)
+icno - varchar(255)
 hash_password - varchar(255)
 email - varchar(255)
 
