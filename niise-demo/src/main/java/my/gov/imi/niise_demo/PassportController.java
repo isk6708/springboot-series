@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @AllArgsConstructor
 @RestController
@@ -22,15 +21,15 @@ public class PassportController {
     // ===================================================================
 
     /**
-     * Public endpoint to view all passports without exposing backend IDs.
+     * Public endpoint to view and search passports without exposing backend IDs.
+     * Example: GET /api/v1/passports?fullname=Ali&icno=90
      */
     @GetMapping
-    public List<PassportDto> getPassports() {
-        var passportList = StreamSupport
-                .stream(service.findAllPassports().spliterator(), false)
-                .collect(Collectors.toList());
-
-        return passportList
+    public List<PassportDto> getPassports(
+            @RequestParam(value = "fullname", required = false) String fullname,
+            @RequestParam(value = "icno", required = false) String icno) {
+            
+        return service.searchPassports(fullname, icno)
                 .stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -52,15 +51,15 @@ public class PassportController {
     // ===================================================================
 
     /**
-     * Administrative dashboard endpoint to see all records with their backend IDs.
+     * Administrative dashboard endpoint to see and search records with their backend IDs.
+     * Example: GET /api/v1/passports/admin?icno=8801
      */
     @GetMapping("/admin")
-    public List<PassportAdminDto> getPassportsForAdmin() {
-        var passportList = StreamSupport
-                .stream(service.findAllPassports().spliterator(), false)
-                .collect(Collectors.toList());
-
-        return passportList
+    public List<PassportAdminDto> getPassportsForAdmin(
+            @RequestParam(value = "fullname", required = false) String fullname,
+            @RequestParam(value = "icno", required = false) String icno) {
+            
+        return service.searchPassports(fullname, icno)
                 .stream()
                 .map(this::convertToAdminDto)
                 .collect(Collectors.toList());
@@ -80,10 +79,7 @@ public class PassportController {
     @PutMapping("/admin")
     public PassportAdminDto updatePassportAdmin(@Valid @RequestBody PassportAdminDto adminDto) {
         var entity = convertToEntityFromAdmin(adminDto);
-        
-        // Triggers the update down to the service layer using the DTO's body-parsed ID
         var updatedEntity = service.updatePassport(adminDto.getId(), entity);
-        
         return convertToAdminDto(updatedEntity);
     }
 

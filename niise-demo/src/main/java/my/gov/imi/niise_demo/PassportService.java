@@ -3,6 +3,7 @@ package my.gov.imi.niise_demo;
 import my.gov.imi.niise_demo.Passport; // Your Entity class
 import my.gov.imi.niise_demo.PassportRepository;
 import my.gov.imi.niise_demo.exception.NotFoundException; // Assuming you create this custom exception
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,5 +58,20 @@ public class PassportService {
                 .orElseThrow(
                         () -> new NotFoundException("Passport by id " + id + " was not found")
                 );
+    }
+
+    public List<Passport> searchPassports(String fullname, String icno) {
+        boolean hasName = fullname != null && !fullname.trim().isEmpty();
+        boolean hasIc = icno != null && !icno.trim().isEmpty();
+
+        if (hasName && hasIc) {
+            return repo.findByFullnameContainingIgnoreCaseAndIcnoContainingIgnoreCase(fullname.trim(), icno.trim());
+        } else if (hasName) {
+            return repo.findByFullnameContainingIgnoreCase(fullname.trim());
+        } else if (hasIc) {
+            return repo.findByIcnoContainingIgnoreCase(icno.trim());
+        } else {
+            return repo.findAll();
+        }
     }
 }
