@@ -3,6 +3,7 @@ package my.gov.imi.niise_demo;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder; // Added for password encryption
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -16,6 +17,7 @@ public class PenggunaController {
     
     private final PenggunaService service;
     private final ModelMapper mapper;
+    private final PasswordEncoder passwordEncoder; // 1. Injected the security password encoder
 
     // ===================================================================
     // PUBLIC AUTHENTICATION & PROFILE ENDPOINTS (Hides Database IDs)
@@ -50,9 +52,6 @@ public class PenggunaController {
         var savedPengguna = service.addPengguna(entity);
 
         var responseDto = convertToDto(savedPengguna);
-        // Clear out the password string from the response payload for data security
-        responseDto.setPassword(null);
-
         return ResponseEntity.ok(responseDto);
     }
 
@@ -106,24 +105,34 @@ public class PenggunaController {
     // ===================================================================
 
     private PenggunaDto convertToDto(Pengguna entity) {
-        return mapper.map(entity, PenggunaDto.class);
+        PenggunaDto dto = mapper.map(entity, PenggunaDto.class);
+        // dto.setPassword(null); // 2. CRUCIAL: Never leak the password back in public responses
+        dto.setPassword(entity.getHashPassword()); 
+        return dto;
     }
 
     private Pengguna convertToEntity(PenggunaDto dto) {
-        // Explicitly binds the DTO's plain text password field to the entity's hashPassword destination field
         Pengguna pengguna = mapper.map(dto, Pengguna.class);
-        pengguna.setHashPassword(dto.getPassword());
+        // 3. CRUCIAL: Automatically hashes the raw input text via BCrypt before hitting SQLite
+        if (dto.getPassword() != null) {
+            pengguna.setHashPassword(passwordEncoder.encode(dto.getPassword()));
+        }
         return pengguna;
     }
 
     private PenggunaAdminDto convertToAdminDto(Pengguna entity) {
-        return mapper.map(entity, PenggunaAdminDto.class);
+        PenggunaAdminDto dto = mapper.map(entity, PenggunaAdminDto.class);
+        // dto.setPassword(null); // 4. CRUCIAL: Protect the password value on admin response payloads too
+        dto.setPassword(entity.getHashPassword()); 
+        return dto;
     }
 
     private Pengguna convertToEntityFromAdmin(PenggunaAdminDto adminDto) {
-        // Explicitly binds the Admin DTO's password field to the entity's hashPassword destination field
         Pengguna pengguna = mapper.map(adminDto, Pengguna.class);
-        pengguna.setHashPassword(adminDto.getPassword());
+        // 5. CRUCIAL: Encrypts the administrative update inputs safely
+        if (adminDto.getPassword() != null && !adminDto.getPassword().isBlank()) {
+            pengguna.setHashPassword(passwordEncoder.encode(adminDto.getPassword()));
+        }
         return pengguna;
     }
 }
