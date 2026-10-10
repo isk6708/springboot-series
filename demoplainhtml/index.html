@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f3f5f2">
+    <title>NIISE | Records Console</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="#top" aria-label="NIISE records home">
+            <span class="brand-mark" aria-hidden="true">N</span>
+            <span><strong>NIISE</strong><small>Records console</small></span>
+        </a>
+        <div class="header-status">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="session-label">Not signed in</span>
+            <button id="logout-button" class="button button-quiet" type="button">Sign out</button>
+        </div>
+    </header>
+
+    <main id="top">
+        <section class="intro" aria-labelledby="page-title">
+            <p class="eyebrow">Identity services / API console</p>
+            <h1 id="page-title">Records, in one place.</h1>
+            <p>Public account services and secured record administration.</p>
+        </section>
+
+        <nav class="menu public-menu" aria-label="Public endpoints">
+            <span class="menu-label">Public</span>
+            <a href="#login-panel">Sign in</a>
+            <a href="#register">Register</a>
+            <a href="#public-search">Find users</a>
+        </nav>
+
+        <section class="public-layout" aria-label="Public services">
+            <section id="login-panel" class="panel login-panel" aria-labelledby="login-title">
+                <div class="panel-heading">
+                    <div><p class="eyebrow">Existing account</p><h2 id="login-title">Sign in</h2></div>
+                    <span class="endpoint">POST /api/v1/login</span>
+                </div>
+                <form id="login-form" class="form-grid" autocomplete="on">
+                    <label>Email<input name="email" type="email" autocomplete="username" required></label>
+                    <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+                    <button class="button button-primary" type="submit">Sign in <span aria-hidden="true">→</span></button>
+                </form>
+                <p id="login-message" class="message" role="status" hidden></p>
+            </section>
+
+            <section id="register" class="panel" aria-labelledby="register-title">
+                <div class="panel-heading">
+                    <div><p class="eyebrow">New account</p><h2 id="register-title">Register a user</h2></div>
+                    <span class="endpoint">POST /api/v1/pengguna/register</span>
+                </div>
+                <form id="register-form" class="form-grid two-column">
+                    <label>Full name<input name="nama" required></label>
+                    <label>Identity number<input name="icno"></label>
+                    <label>Email<input name="email" type="email" required></label>
+                    <label>Password<input name="password" type="password" minlength="6" required></label>
+                    <button class="button button-primary" type="submit">Create account <span aria-hidden="true">→</span></button>
+                </form>
+                <p id="register-message" class="message" role="status" hidden></p>
+            </section>
+        </section>
+
+        <section id="public-search" class="panel data-panel" aria-labelledby="public-search-title">
+            <div class="panel-heading">
+                <div><p class="eyebrow">No sign-in required</p><h2 id="public-search-title">Find registered users</h2></div>
+                <span class="endpoint">GET /api/v1/pengguna</span>
+            </div>
+            <form id="public-search-form" class="search-form">
+                <label>Name<input name="nama" placeholder="Search by name"></label>
+                <label>Identity number<input name="icno" placeholder="Search by identity number"></label>
+                <button class="button button-secondary" type="submit">Search</button>
+            </form>
+            <p id="public-search-message" class="message" role="status" hidden></p>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Name</th><th>Email</th><th>Identity number</th></tr></thead>
+                    <tbody id="public-pengguna-results"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="protected-content" hidden>
+            <div class="protected-heading">
+                <div><p class="eyebrow">Bearer token required</p><h2>Authenticated endpoints</h2></div>
+                <nav id="protected-menu" class="menu protected-menu" aria-label="Authenticated endpoints" hidden>
+                    <span class="menu-label">Manage</span>
+                    <button type="button" data-view="passports">Passports</button>
+                    <button type="button" data-view="pengguna-admin">Pengguna</button>
+                </nav>
+            </div>
+
+            <section class="panel data-panel" data-panel="passports" aria-labelledby="passport-title" hidden>
+                <div class="panel-heading">
+                    <div><p class="eyebrow">Authenticated</p><h2 id="passport-title">Passport records</h2></div>
+                    <span class="endpoint">/api/v1/passports</span>
+                </div>
+                <form id="passport-search-form" class="search-form">
+                    <label>Full name<input name="fullname" placeholder="Search by full name"></label>
+                    <label>Identity number<input name="icno" placeholder="Search by identity number"></label>
+                    <button class="button button-secondary" type="submit">Search records</button>
+                </form>
+                <p class="endpoint-note">Search, update and delete: <code>/passports/admin</code>. Create: <code>POST /passports</code>.</p>
+                <p id="passport-message" class="message" role="status" hidden></p>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>ID</th><th>Full name</th><th>Identity number</th><th>Actions</th></tr></thead>
+                        <tbody id="passport-results"></tbody>
+                    </table>
+                </div>
+                <form id="passport-form" class="edit-form">
+                    <h3>Create passport</h3>
+                    <input name="id" type="hidden">
+                    <label>Full name<input name="fullname" required></label>
+                    <label>Identity number<input name="icno" required></label>
+                    <div class="form-actions">
+                        <button class="button button-primary" type="submit">Save passport</button>
+                        <button id="passport-cancel" class="button button-quiet" type="button">Clear</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="panel data-panel" data-panel="pengguna-admin" aria-labelledby="admin-pengguna-title" hidden>
+                <div class="panel-heading">
+                    <div><p class="eyebrow">Authenticated</p><h2 id="admin-pengguna-title">User administration</h2></div>
+                    <span class="endpoint">/api/v1/pengguna/admin</span>
+                </div>
+                <form id="pengguna-admin-search-form" class="search-form">
+                    <label>Name<input name="nama" placeholder="Search by name"></label>
+                    <label>Identity number<input name="icno" placeholder="Search by identity number"></label>
+                    <button class="button button-secondary" type="submit">Search records</button>
+                </form>
+                <p id="pengguna-admin-message" class="message" role="status" hidden></p>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Identity number</th><th>Actions</th></tr></thead>
+                        <tbody id="pengguna-admin-results"></tbody>
+                    </table>
+                </div>
+                <form id="pengguna-admin-form" class="edit-form">
+                    <h3>Update user</h3>
+                    <input name="id" type="hidden">
+                    <label>Name<input name="nama" required></label>
+                    <label>Identity number<input name="icno"></label>
+                    <label>Email<input name="email" type="email" required></label>
+                    <label>New password<input name="password" type="password" minlength="6" required></label>
+                    <p class="form-hint">The API requires a password of at least 6 characters for user updates.</p>
+                    <div class="form-actions">
+                        <button class="button button-primary" type="submit">Update user</button>
+                        <button id="pengguna-admin-cancel" class="button button-quiet" type="button">Clear</button>
+                    </div>
+                </form>
+            </section>
+        </section>
+    </main>
+
+    <footer><span>NIISE records console</span><span>Spring Boot API · <code>localhost:8005</code></span></footer>
+</body>
+</html>
