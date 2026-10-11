@@ -1,0 +1,27 @@
+package com.coderslab.lab;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import com.coderslab.lab.lab1.Student;
+import com.coderslab.lab.lab1.Grades;
+
+@Configuration
+public class AppConfig {
+
+    // @Bean
+    // public Student student() {
+    //     return new Student(grades());
+    // }
+
+    @Bean
+    public Student student() {
+        Student student = new Student();
+        student.setGrades(grades());
+        return student;
+    }
+
+    @Bean
+    public Grades grades() {
+        return new Grades();
+    }
+}
