@@ -92,7 +92,7 @@ Login function - token -
 
 curl -X GET "http://localhost:8005/api/v1/pengguna/admin" -H "Authorization: Bearer YOUR_TOKEN_HERE"
 
-curl -X GET "http://localhost:8005/api/v1/pengguna/admin" -H "Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJoYXppZXFAZ21haWwuY29tIiwiaWF0IjoxNzkxNzc0ODI5LCJleHAiOjE3OTE4MTA4Mjl9.r84d3s_uSaOt9IdOBIxrzwiu2c7bdjnY8Qdi43QPflHNO9Wk-JsKHgPGeGtW0lL5"
+curl -X GET "http://localhost:8005/api/v1/pengguna/admin" -H "Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJoYXppZXFAZ21haWwuY29tIiwiaWF0IjoxNzkxNzk2ODU4LCJleHAiOjE3OTE4MzI4NTh9.p9dSyfBUYmm_hOHNyBSBQMtUFQlwBc14kuEthOD2hNx9869cILWCzj5SrIpDExgZ"
 
 eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJoYXppZXFAZ21haWwuY29tIiwiaWF0IjoxNzkxNzc0ODI5LCJleHAiOjE3OTE4MTA4Mjl9.r84d3s_uSaOt9IdOBIxrzwiu2c7bdjnY8Qdi43QPflHNO9Wk-JsKHgPGeGtW0lL5
 

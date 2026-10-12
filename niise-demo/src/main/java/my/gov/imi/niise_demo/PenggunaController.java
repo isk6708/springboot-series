@@ -74,6 +74,13 @@ public class PenggunaController {
                 .collect(Collectors.toList());
     }
 
+    @PostMapping("/admin")
+    public PenggunaAdminDto createPenggunaAdmin(@Valid @RequestBody PenggunaAdminDto adminDto) {
+        // Reuse your helper method to convert the incoming DTO and hash the password
+        var entity = convertToEntityFromAdmin(adminDto);
+        var savedEntity = service.addPengguna(entity);
+        return convertToAdminDto(savedEntity);
+    }
     /**
      * Admin function to fetch a specific user record by its exact ID.
      */
