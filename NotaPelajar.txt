@@ -69,3 +69,41 @@ curl -X POST http://localhost:8006/api/v1/anti-heroes -H "Content-Type: applicat
 curl -X POST http://localhost:8005/api/v1/passports -H "Content-Type: application/json" -d "{\"fullname\":\"Ahmad Razak\",\"icno\":\"950101145679\"}"
 
 curl -X 'GET' 'http://localhost:8005/api/v1/passports' -H 'accept: */*'
+
+
+Day 5 - 12 Oct 2026 - Advanced
+---------------------------------
+Login function - token - 
+	LoginRequest.java - DTO
+	LoginResponse.java - DTO
+	LoginService.java
+	LoginPrincipal.java
+	LoginController.java
+	util/JwtUtil.java
+	config/SecurityConfig.java
+	filters/JwtRequestFilter.java
+	config/AppConfig.java
+	pom.xml - Security related
+	
+
+		- OAuth2.0, SSO - MyDigitalID, CIS
+
+
+
+curl -X GET "http://localhost:8005/api/v1/pengguna/admin" -H "Authorization: Bearer YOUR_TOKEN_HERE"
+
+curl -X GET "http://localhost:8005/api/v1/pengguna/admin" -H "Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJoYXppZXFAZ21haWwuY29tIiwiaWF0IjoxNzkxNzc0ODI5LCJleHAiOjE3OTE4MTA4Mjl9.r84d3s_uSaOt9IdOBIxrzwiu2c7bdjnY8Qdi43QPflHNO9Wk-JsKHgPGeGtW0lL5"
+
+eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJoYXppZXFAZ21haWwuY29tIiwiaWF0IjoxNzkxNzc0ODI5LCJleHAiOjE3OTE4MTA4Mjl9.r84d3s_uSaOt9IdOBIxrzwiu2c7bdjnY8Qdi43QPflHNO9Wk-JsKHgPGeGtW0lL5
+
+
+
+
+
+java -jar "C:\RajWork\2026\JIM\springboot-series\deployed_app\bin\niise-demo-0.0.1-SNAPSHOT.jar"
+Start-Job -Name "NiiseDemoServer" -ScriptBlock { java -jar "C:\RajWork\2026\JIM\springboot-series\deployed_app\bin\niise-demo-0.0.1-SNAPSHOT.jar" --server.port=8006 }
+Useful background management commands:
+• To check the live startup logs: Receive-Job -Name "NiiseDemoServer" -Keep
+• To see if it's still running: Get-Job -Name "NiiseDemoServer"
+• To stop the server completely: Stop-Job -Name "NiiseDemoServer"
+
