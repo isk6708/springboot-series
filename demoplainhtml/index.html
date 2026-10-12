@@ -97,7 +97,10 @@
             <section class="panel data-panel" data-panel="passports" aria-labelledby="passport-title" hidden>
                 <div class="panel-heading">
                     <div><p class="eyebrow">Authenticated</p><h2 id="passport-title">Passport records</h2></div>
-                    <span class="endpoint">/api/v1/passports</span>
+                    <div class="panel-tools">
+                        <span class="endpoint">/api/v1/passports</span>
+                        <button id="passport-add" class="button button-primary" type="button">Add new passport</button>
+                    </div>
                 </div>
                 <form id="passport-search-form" class="search-form">
                     <label>Full name<input name="fullname" placeholder="Search by full name"></label>
@@ -127,7 +130,10 @@
             <section class="panel data-panel" data-panel="pengguna-admin" aria-labelledby="admin-pengguna-title" hidden>
                 <div class="panel-heading">
                     <div><p class="eyebrow">Authenticated</p><h2 id="admin-pengguna-title">User administration</h2></div>
-                    <span class="endpoint">/api/v1/pengguna/admin</span>
+                    <div class="panel-tools">
+                        <span class="endpoint">/api/v1/pengguna/admin</span>
+                        <button id="pengguna-admin-add" class="button button-primary" type="button">Add new user</button>
+                    </div>
                 </div>
                 <form id="pengguna-admin-search-form" class="search-form">
                     <label>Name<input name="nama" placeholder="Search by name"></label>
@@ -142,15 +148,15 @@
                     </table>
                 </div>
                 <form id="pengguna-admin-form" class="edit-form">
-                    <h3>Update user</h3>
+                    <h3 id="pengguna-admin-form-title">Update user</h3>
                     <input name="id" type="hidden">
                     <label>Name<input name="nama" required></label>
                     <label>Identity number<input name="icno"></label>
                     <label>Email<input name="email" type="email" required></label>
                     <label>New password<input name="password" type="password" minlength="6" required></label>
-                    <p class="form-hint">The API requires a password of at least 6 characters for user updates.</p>
+                    <p class="form-hint">The API requires a password of at least 6 characters.</p>
                     <div class="form-actions">
-                        <button class="button button-primary" type="submit">Update user</button>
+                        <button id="pengguna-admin-submit" class="button button-primary" type="submit">Update user</button>
                         <button id="pengguna-admin-cancel" class="button button-quiet" type="button">Clear</button>
                     </div>
                 </form>

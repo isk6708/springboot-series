@@ -79,6 +79,7 @@ h1 { margin-bottom: 8px; font-size: clamp(32px, 5vw, 48px); line-height: 1.08; }
 }
 .panel-heading, .protected-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
 .panel-heading { margin-bottom: 18px; }
+.panel-tools { display: flex; align-items: center; gap: 8px; }
 .panel-heading .eyebrow, .protected-heading .eyebrow { margin-bottom: 4px; }
 h2 { margin-bottom: 0; font-size: 25px; }
 h3 { margin: 0 0 14px; font-family: var(--serif); font-size: 20px; font-weight: 500; }
@@ -145,6 +146,7 @@ footer { display: flex; justify-content: space-between; gap: 15px; padding: 18px
     .public-layout { grid-template-columns: 1fr; gap: 0; }
     .panel { padding: 17px; }
     .panel-heading { flex-direction: column; gap: 9px; }
+    .panel-tools { width: 100%; justify-content: space-between; }
     .search-form { grid-template-columns: 1fr; }
     .protected-heading { display: block; }
     .protected-menu { margin-top: 12px; }

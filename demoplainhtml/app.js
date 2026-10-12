@@ -21,6 +21,8 @@ function bindConsoleEvents() {
     document.getElementById("logout-button").addEventListener("click", logoutConsole);
     document.getElementById("passport-cancel").addEventListener("click", () => clearConsoleForm("passport"));
     document.getElementById("pengguna-admin-cancel").addEventListener("click", () => clearConsoleForm("pengguna-admin"));
+    document.getElementById("passport-add").addEventListener("click", startConsolePassportCreate);
+    document.getElementById("pengguna-admin-add").addEventListener("click", startConsolePenggunaCreate);
     document.querySelectorAll("[data-view]").forEach((button) => {
         button.addEventListener("click", () => showConsoleView(button.dataset.view));
     });
@@ -179,17 +181,18 @@ async function loadConsolePengguna(event) {
 async function saveConsolePengguna(event) {
     event.preventDefault();
     const values = new FormData(event.currentTarget);
+    const id = values.get("id");
     const payload = {
-        id: Number(values.get("id")),
         nama: values.get("nama"),
         icno: values.get("icno"),
         email: values.get("email"),
         password: values.get("password")
     };
+    if (id) payload.id = Number(id);
     try {
-        await consoleRequest("/pengguna/admin", { method: "PUT", body: JSON.stringify(payload) });
+        await consoleRequest("/pengguna/admin", { method: id ? "PUT" : "POST", body: JSON.stringify(payload) });
         clearConsoleForm("pengguna-admin");
-        showConsoleMessage("pengguna-admin-message", "User updated.", "success");
+        showConsoleMessage("pengguna-admin-message", id ? "User updated." : "User created.", "success");
         loadConsolePengguna();
     } catch (error) {
         showConsoleMessage("pengguna-admin-message", error.message, "error");
@@ -265,6 +268,7 @@ function fillConsoleForm(prefix, record) {
         const field = form.elements.namedItem(key);
         if (field && key !== "password") field.value = value ?? "";
     });
+    if (prefix === "pengguna-admin") setConsolePenggunaFormMode("update");
     form.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
@@ -272,6 +276,27 @@ function clearConsoleForm(prefix) {
     const form = document.getElementById(`${prefix}-form`);
     form.reset();
     form.elements.namedItem("id").value = "";
+    if (prefix === "pengguna-admin") setConsolePenggunaFormMode("create");
+}
+
+function startConsolePassportCreate() {
+    clearConsoleForm("passport");
+    const form = document.getElementById("passport-form");
+    form.scrollIntoView({ behavior: "smooth", block: "center" });
+    form.elements.namedItem("fullname").focus();
+}
+
+function startConsolePenggunaCreate() {
+    clearConsoleForm("pengguna-admin");
+    const form = document.getElementById("pengguna-admin-form");
+    form.scrollIntoView({ behavior: "smooth", block: "center" });
+    form.elements.namedItem("nama").focus();
+}
+
+function setConsolePenggunaFormMode(mode) {
+    const isUpdate = mode === "update";
+    document.getElementById("pengguna-admin-form-title").textContent = isUpdate ? "Update user" : "Add new user";
+    document.getElementById("pengguna-admin-submit").textContent = isUpdate ? "Update user" : "Create user";
 }
 
 function showConsoleMessage(id, message, kind = "") {
