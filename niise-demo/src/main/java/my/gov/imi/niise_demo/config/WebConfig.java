@@ -15,6 +15,7 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/v1/**") // Applies configuration to all api endpoints
                         .allowedOriginPatterns("*") // Safely allows both http://localhost and file:// (Origin: null)
+                        .allowedOrigins("http://localhost:5500", "http://127.0.0.1:5500")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Explicitly allow all CRUD operations
                         .allowedHeaders("*") // Allows Authorization, Content-Type, etc.
                         .exposedHeaders("Authorization") // Allows frontend JS to read your Bearer token if needed
