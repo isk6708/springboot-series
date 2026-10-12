@@ -64,11 +64,6 @@ async function consoleRequest(path, options = {}) {
     const headers = new Headers(options.headers || {});
     if (options.body !== undefined) headers.set("Content-Type", "application/json");
 
-    console.log("--- Debug Auth Token ---");
-    console.log("consoleToken():", consoleToken());
-    console.log("consoleTokenType():", consoleTokenType());
-    console.log("------------------------");
-
     if (consoleToken() && (path.startsWith("/passports") || path.startsWith("/pengguna/admin"))) {
         headers.set("Authorization", `${consoleTokenType()} ${consoleToken()}`);
     }
