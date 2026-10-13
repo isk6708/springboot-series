@@ -78,8 +78,16 @@ class PassportControllerVerTwoTest {
                         assertThat(dto.getFullname()).isEqualTo("Ali");
                         assertThat(dto.getIcno()).isEqualTo("900101");
                     });
-
+            
+            String invalidIcno = "900-10-1";
+            assertThat(invalidIcno).contains("-");
+            // assertThat(invalidIcno).doesNotContain("-");
+            // invalidIcno = "900101";
+            List<PassportDto> result2 = controller.getPassports("Ali", invalidIcno);
+            assertThat(result2).isEmpty();
+            
             verify(service).searchPassports("Ali", "900101");
+            
             verify(service, never()).findPassportById(any(Integer.class));
         }
 
