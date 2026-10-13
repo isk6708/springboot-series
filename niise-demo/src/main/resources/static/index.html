@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIISE - Administrative Console</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --success: #16a34a;
+            --error: #dc2626;
+            --bg: #f8fafc;
+            --text: #1e293b;
+        }
+        body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 20px; }
+        .nav-btn { background: #e2e8f0; border: none; padding: 8px 16px; cursor: pointer; font-weight: 500; border-radius: 4px; margin-right: 5px; }
+        .nav-btn[aria-current="page"] { background: var(--primary); color: white; }
+        .panel { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        form { display: grid; gap: 10px; max-width: 400px; margin-bottom: 15px; }
+        input { padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; }
+        button[type="submit"], .action-btn { background: var(--primary); color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .button-danger { background: var(--error) !important; }
+        .message { padding: 10px; border-radius: 4px; margin-bottom: 15px; font-weight: 500; }
+        .message-success { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+        .message-error { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f1f5f9; }
+        .row-actions button { margin-right: 5px; padding: 4px 8px; font-size: 12px; border-radius: 4px; cursor: pointer; border: 1px solid #cbd5e1; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>NIISE Portal - Static</h1>
+            <p id="session-label">Not signed in</p>
+        </div>
+        <div id="protected-menu" hidden>
+            <button class="nav-btn" data-view="passports" aria-current="false">Passports Panel</button>
+            <button class="nav-btn" data-view="pengguna-admin" aria-current="false">Users Admin</button>
+            <button id="logout-button" class="nav-btn button-danger" style="color: white;">Logout</button>
+        </div>
+    </header>
+
+    <!-- 1. PUBLIC PUBLIC VIEW: LOGIN PANEL -->
+    <div id="login-panel" class="panel">
+        <h2>Console Sign In</h2>
+        <div id="login-message" class="message" hidden></div>
+        <form id="login-form">
+            <input type="email" name="email" placeholder="Email (e.g. hazieq@gmail.com)" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #e2e8f0;">
+
+        <h2>Public Registration</h2>
+        <div id="register-message" class="message" hidden></div>
+        <form id="register-form">
+            <input type="text" name="nama" placeholder="Full Name" required>
+            <input type="text" name="icno" placeholder="IC Number" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Register Account</button>
+        </form>
+
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #e2e8f0;">
+
+        <h2>Public Directory Search</h2>
+        <div id="public-search-message" class="message" hidden></div>
+        <form id="public-search-form">
+            <input type="text" name="nama" placeholder="Search by name...">
+            <input type="text" name="icno" placeholder="Search by IC...">
+            <button type="submit">Search Public Directory</button>
+        </form>
+        <table>
+            <thead>
+                <tr><th>Name</th><th>Email</th><th>Identity Number</th></tr>
+            </thead>
+            <tbody id="public-pengguna-results"></tbody>
+        </table>
+    </div>
+
+    <!-- 2. PROTECTED VIEW CONTINUATION CONTAINER -->
+    <div id="protected-content" hidden>
+        
+        <!-- PANEL: PASSPORTS MANAGEMENT -->
+        <div id="passport-panel" class="panel" data-panel="passports" hidden>
+            <h2>Passport Management</h2>
+            <div id="passport-message" class="message" hidden></div>
+            
+            <button id="passport-add" class="action-btn" style="margin-bottom: 15px;">+ Add New Passport</button>
+
+            <form id="passport-form">
+                <input type="hidden" name="id">
+                <input type="text" name="fullname" placeholder="Full Name on Passport">
+                <input type="text" name="icno" placeholder="IC Number">
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" style="flex: 1;">Save Passport</button>
+                    <button type="button" id="passport-cancel" style="background:#64748b; color:white; border:none; padding:10px; border-radius:4px; cursor:pointer;">Cancel</button>
+                </div>
+            </form>
+
+            <form id="passport-search-form" style="margin-top: 20px;">
+                <input type="text" name="fullname" placeholder="Filter by passport name...">
+                <button type="submit">Filter Passports</button>
+            </form>
+
+            <table>
+                <thead>
+                    <tr><th>ID</th><th>Full Name</th><th>IC Number</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="passport-results"></tbody>
+            </table>
+        </div>
+
+        <!-- PANEL: USER MANAGEMENT ADMINISTRATIVE DASHBOARD -->
+        <div id="pengguna-admin-panel" class="panel" data-panel="pengguna-admin" hidden>
+            <h2 id="pengguna-admin-form-title">Add new user</h2>
+            <div id="pengguna-admin-message" class="message" hidden></div>
+
+            <button id="pengguna-admin-add" class="action-btn" style="margin-bottom: 15px;">+ Add New User</button>
+
+            <form id="pengguna-admin-form">
+                <input type="hidden" name="id">
+                <input type="text" name="nama" placeholder="Name" required>
+                <input type="text" name="icno" placeholder="IC Number" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password">
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" id="pengguna-admin-submit" style="flex: 1;">Create user</button>
+                    <button type="button" id="pengguna-admin-cancel" style="background:#64748b; color:white; border:none; padding:10px; border-radius:4px; cursor:pointer;">Cancel</button>
+                </div>
+            </form>
+
+            <h3 style="margin-top: 30px;">Filter Administrative Records</h3>
+            <form id="pengguna-admin-search-form">
+                <input type="text" name="nama" placeholder="Filter by name...">
+                <input type="text" name="icno" placeholder="Filter by IC...">
+                <button type="submit">Filter Records</button>
+            </form>
+
+            <table>
+                <thead>
+                    <tr><th>ID</th><th>Name</th><th>Email</th><th>Identity Number</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="pengguna-admin-results"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Main Controller Logic Link -->
+    <script src="app.js"></script>
+</body>
+</html>

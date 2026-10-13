@@ -109,7 +109,9 @@ public class SecurityConfig {
                     "/configuration/security",
                     "/webjars/**"
                 ).permitAll()
-                
+                // FIX: Add this line to allow your browser to load index.html, app.js, and CSS files
+                .requestMatchers("/", "/index.html", "/app.js", "/static/**", "/*.html", "/*.js", "/*.css").permitAll()
+    
                 // Matches endpoints cleanly to catch any route mutations
                 .requestMatchers("/api/v1/passports/admin", "/api/v1/passports/admin/**").authenticated()
                 .requestMatchers("/api/v1/pengguna/admin", "/api/v1/pengguna/admin/**").authenticated()
