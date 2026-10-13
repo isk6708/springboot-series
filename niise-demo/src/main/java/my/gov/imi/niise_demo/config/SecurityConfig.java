@@ -18,6 +18,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+// Added for Swagger OpenAPI security configuration setup
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -27,6 +34,32 @@ public class SecurityConfig {
     private final LoginService loginService;
     private final JwtRequestFilter jwtFilter;
     private final PasswordEncoder passwordEncoder; // Injected from AppConfig cleanly
+
+    /**
+     * Swagger OpenAPI Configuration
+     * Enables the global "Authorize" paddock button to pass Bearer tokens to secure routes.
+     */
+    @Bean
+    public OpenAPI customOpenAPI() {
+        final String securitySchemeName = "bearerAuth";
+        
+        return new OpenAPI()
+                .info(new Info()
+                        .title("NIISE Demo API Console")
+                        .version("1.0.0")
+                        .description("Administrative backend systems configuration documentation."))
+                // Automatically flags all endpoints documented in Swagger to require the authorization padlocks
+                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+                // Declares the structure as an HTTP Bearer header injection scheme
+                .components(new Components()
+                        .addSecuritySchemes(securitySchemeName,
+                                new SecurityScheme()
+                                        .name("Authorization")
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                        ));
+    }
 
     /**
      * Explicit authentication provider registration.
@@ -77,8 +110,9 @@ public class SecurityConfig {
                     "/webjars/**"
                 ).permitAll()
                 
-                .requestMatchers("/api/v1/passports/admin/**").authenticated()
-                .requestMatchers("/api/v1/pengguna/admin/**").authenticated()
+                // Matches endpoints cleanly to catch any route mutations
+                .requestMatchers("/api/v1/passports/admin", "/api/v1/passports/admin/**").authenticated()
+                .requestMatchers("/api/v1/pengguna/admin", "/api/v1/pengguna/admin/**").authenticated()
                 
                 .anyRequest().authenticated()
             );
