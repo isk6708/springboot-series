@@ -84,6 +84,16 @@ public class PassportController {
     }
 
     /**
+     * Admin function to create a new passport record; `icno` is accepted as a plain field name.
+     */
+    @PostMapping("/admin-no-dash")
+    public PassportAdminDto postPassportAdminNoDash(@Valid @RequestBody PassportAdminDto adminDto) {
+        var entity = convertToEntityFromAdmin(adminDto);
+        var passport = service.addPassport(entity);
+        return convertToAdminDto(passport);
+    }
+
+    /**
      * Admin function to permanently delete a passport record from the system.
      */
     @DeleteMapping("/admin/{id}")

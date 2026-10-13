@@ -63,6 +63,28 @@ class PassportControllerTest {
     }
 
     @Test
+    void postPassportAdminNoDashMapsRequestAndReturnsAdminDto() {
+        PassportAdminDto request = new PassportAdminDto();
+        request.setFullname("Ali");
+        request.setIcno("900101");
+        when(service.addPassport(org.mockito.ArgumentMatchers.any(Passport.class)))
+                .thenAnswer(invocation -> {
+                    Passport saved = invocation.getArgument(0);
+                    saved.setId(5);
+                    return saved;
+                });
+
+        PassportAdminDto result = controller.postPassportAdminNoDash(request);
+
+        ArgumentCaptor<Passport> passportCaptor = ArgumentCaptor.forClass(Passport.class);
+        verify(service).addPassport(passportCaptor.capture());
+        assertEquals("900101", passportCaptor.getValue().getIcno());
+        assertEquals(5, result.getId());
+        assertEquals("Ali", result.getFullname());
+        assertEquals("900101", result.getIcno());
+    }
+
+    @Test
     void getPassportsForAdminReturnsDtosWithIds() {
         Passport passport = passport(7, "Ali", "900101");
         when(service.searchPassports("Ali", null)).thenReturn(List.of(passport));
