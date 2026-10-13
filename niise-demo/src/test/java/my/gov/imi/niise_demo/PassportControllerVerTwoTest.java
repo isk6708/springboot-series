@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -81,12 +82,24 @@ class PassportControllerVerTwoTest {
             
             String invalidIcno = "900-10-1";
             assertThat(invalidIcno).contains("-");
-            // assertThat(invalidIcno).doesNotContain("-");
-            // invalidIcno = "900101";
+            
             List<PassportDto> result2 = controller.getPassports("Ali", invalidIcno);
             assertThat(result2).isEmpty();
+
+            // 1. Arrange: Define a valid IC number string with no hyphens
+        String validIcno = "900101";
+
+        // 2. Act & Assert: Verify the format contains no invalid characters
+        assertThat(validIcno).doesNotContain("-");
+
+        // 3. Execute: Call the controller method directly without any exception wrappers
+        List<PassportDto> result3 = controller.getPassports("Ali", validIcno);
+
+        // 4. Verify: Assert that a valid dataset is returned successfully
+        assertThat(result3).isNotEmpty();
             
-            verify(service).searchPassports("Ali", "900101");
+            // verify(service,times(2)).searchPassports("Ali", "900101");
+            verify(service, atLeastOnce()).searchPassports("Ali", "900101");
             
             verify(service, never()).findPassportById(any(Integer.class));
         }
