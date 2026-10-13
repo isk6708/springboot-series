@@ -8,25 +8,30 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Ensure Target Directory Exists and Sync Code
+      - name: Stop Existing Spring Boot Application Instance
         shell: cmd
         run: |
-          :: 1. Verify and create the folder hierarchy up to beginner if missing
-          if not exist "C:\RajWork\2026\JIM\SpringBoot\beginner" (
-              mkdir "C:\RajWork\2026\JIM\SpringBoot\beginner"
+          :: Search for any running task occupying your customized port 8005
+          echo Checking for existing process on port 8005...
+          for /f "tokens=5" %%a in ('netstat -aon ^| findstr :8005 ^| findstr LISTENING') do (
+              echo Found running application with PID %%a. Terminating process...
+              taskkill /F /PID %%a
           )
-          
+
+      - name: Sync Git Code Repo
+        shell: cmd
+        run: |
+          :: Ensure we are working inside the true git root folder
           cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner"
           
-          :: 2. Initialize git safely inside the destination subfolder
+          :: Initialize git safely if it hasn't been set up in this specific runner workspace yet
           if not exist .git (
               git init
-              :: FIXED: Added the complete URL to your repository path
               git remote add origin https://github.com
               git fetch origin advanced
               git checkout -b advanced origin/advanced
           ) else (
-              :: 3. Pull newest code changes safely while discarding local modifications
+              :: Fetch newest code changes safely while discarding local workspace modifications
               git checkout advanced
               git fetch origin advanced
               git reset --hard origin/advanced
@@ -46,3 +51,15 @@ jobs:
           
           :: Compile and Package the application
           call mvnw.cmd clean package -DskipTests
+
+      - name: Deliver Executable Artifact to Deployment Folder
+        shell: cmd
+        run: |
+          :: Create a dedicated delivery folder outside the source tree if it doesn't exist
+          if not exist "C:\RajWork\2026\JIM\SpringBoot\deploy-bin" (
+              mkdir "C:\RajWork\2026\JIM\SpringBoot\deploy-bin"
+          )
+          
+          :: Copy the freshly generated jar file to your deployment directory
+          echo Copying production artifact...
+          copy /Y "C:\RajWork\2026\JIM\SpringBoot\beginner\niise-demo\target\*.jar" "C:\RajWork\2026\JIM\SpringBoot\deploy-bin\"
