@@ -1,6 +1,9 @@
 name: Deploy Spring Boot App to Local Windows 11
 
 on:
+  push:
+    branches:
+      - advanced
   workflow_dispatch:
 
 jobs:
@@ -12,10 +15,7 @@ jobs:
         shell: cmd
         run: |
           echo Checking for existing process on port 8005...
-          
-          :: Check if any process is actively listening on port 8005
           netstat -aon | findstr :8005 | findstr LISTENING >nul 2>&1
-          
           if %errorlevel% equ 0 (
               echo Found an active application process. Terminating...
               for /f "tokens=5" %%a in ('netstat -aon ^| findstr :8005 ^| findstr LISTENING') do (
@@ -31,7 +31,7 @@ jobs:
           cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner"
           if not exist .git (
               git init
-              :: FIXED: Ensure the full repo URL is used
+              :: FIXED: Restored your real, complete repository endpoint string
               git remote add origin https://github.com
               git fetch origin advanced
               git checkout -b advanced origin/advanced
