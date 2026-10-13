@@ -88,7 +88,11 @@ public class PassportController {
      */
     @PostMapping("/admin-no-dash")
     public PassportAdminDto postPassportAdminNoDash(@Valid @RequestBody PassportAdminDto adminDto) {
+        var icno = adminDto.getIcno();
         var entity = convertToEntityFromAdmin(adminDto);
+        if (icno != null) {
+            entity.setIcno(icno.replace("-", ""));
+        }
         var passport = service.addPassport(entity);
         return convertToAdminDto(passport);
     }

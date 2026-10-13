@@ -66,7 +66,7 @@ class PassportControllerTest {
     void postPassportAdminNoDashMapsRequestAndReturnsAdminDto() {
         PassportAdminDto request = new PassportAdminDto();
         request.setFullname("Ali");
-        request.setIcno("900101");
+        request.setIcno("900-101");
         when(service.addPassport(org.mockito.ArgumentMatchers.any(Passport.class)))
                 .thenAnswer(invocation -> {
                     Passport saved = invocation.getArgument(0);
