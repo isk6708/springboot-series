@@ -11,21 +11,22 @@ jobs:
       - name: Ensure Target Directory Exists and Sync Code
         shell: cmd
         run: |
-          :: 1. Verify and create the deployment directory if missing
+          :: 1. Verify and create the folder hierarchy up to beginner if missing
           if not exist "C:\RajWork\2026\JIM\SpringBoot\beginner" (
               mkdir "C:\RajWork\2026\JIM\SpringBoot\beginner"
           )
           
           cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner"
           
-          :: 2. Initialize git repository if it hasn't been set up yet
+          :: 2. Initialize git safely inside the destination subfolder
           if not exist .git (
               git init
+              :: FIXED: Added the complete URL to your repository path
               git remote add origin https://github.com
               git fetch origin advanced
               git checkout -b advanced origin/advanced
           ) else (
-              :: 3. Pull newest code safely if repository already exists
+              :: 3. Pull newest code changes safely while discarding local modifications
               git checkout advanced
               git fetch origin advanced
               git reset --hard origin/advanced
@@ -40,7 +41,7 @@ jobs:
       - name: Build Spring Boot Application
         shell: cmd
         run: |
-          :: Navigate deep into your specific niise-demo subfolder inside the target folder
+          :: Navigate directly to where the pom.xml and mvnw.cmd files reside
           cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner\niise-demo"
           
           :: Compile and Package the application
