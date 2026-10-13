@@ -1,9 +1,7 @@
 name: Deploy Spring Boot App to Local Windows 11
 
+# Strictly manual trigger via the GitHub Actions UI
 on:
-  push:
-    branches:
-      - advanced
   workflow_dispatch:
 
 jobs:
@@ -17,6 +15,7 @@ jobs:
           cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner"
           if not exist .git (
               git init
+              :: FIXED: Ensuring full repo endpoint is targeted
               git remote add origin https://github.com
               git fetch origin advanced
               git checkout -b advanced origin/advanced
@@ -36,6 +35,7 @@ jobs:
         shell: cmd
         run: |
           cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner\niise-demo"
+          :: Packages your source code into an executable .jar file
           call mvnw.cmd clean package -DskipTests
 
       - name: Deliver Executable Artifact to Deployment Folder
@@ -46,3 +46,12 @@ jobs:
           )
           echo Copying production artifact...
           copy /Y "C:\RajWork\2026\JIM\SpringBoot\beginner\niise-demo\target\*.jar" "C:\RajWork\2026\JIM\SpringBoot\deploy-bin\"
+
+      - name: Automatically Start Spring Boot Application
+        shell: cmd
+        run: |
+          cd /d "C:\RajWork\2026\JIM\SpringBoot\deploy-bin"
+          echo Starting the new application version in the background...
+          
+          :: Launches the jar in the background using 'javaw' so the GitHub runner can exit cleanly
+          start /B javaw -jar niise-demo-0.0.1-SNAPSHOT.jar
