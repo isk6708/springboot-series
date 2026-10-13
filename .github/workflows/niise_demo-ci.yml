@@ -1,10 +1,6 @@
 name: Deploy Spring Boot App to Local Windows 11
 
-# Temporary dual-trigger to force GitHub to register the file on this branch
 on:
-  push:
-    branches:
-      - advanced
   workflow_dispatch:
 
 jobs:
@@ -16,9 +12,17 @@ jobs:
         shell: cmd
         run: |
           echo Checking for existing process on port 8005...
-          for /f "tokens=5" %%a in ('netstat -aon ^| findstr :8005 ^| findstr LISTENING') do (
-              echo Found running application with PID %%a. Terminating process...
-              taskkill /F /PID %%a
+          
+          :: Check if any process is actively listening on port 8005
+          netstat -aon | findstr :8005 | findstr LISTENING >nul 2>&1
+          
+          if %errorlevel% equ 0 (
+              echo Found an active application process. Terminating...
+              for /f "tokens=5" %%a in ('netstat -aon ^| findstr :8005 ^| findstr LISTENING') do (
+                  taskkill /F /PID %%a
+              )
+          ) else (
+              echo No active process found running on port 8005. Safe to proceed!
           )
 
       - name: Sync Git Code Repo
@@ -27,6 +31,7 @@ jobs:
           cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner"
           if not exist .git (
               git init
+              :: FIXED: Ensure the full repo URL is used
               git remote add origin https://github.com
               git fetch origin advanced
               git checkout -b advanced origin/advanced
