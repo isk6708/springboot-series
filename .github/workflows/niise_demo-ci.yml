@@ -1,29 +1,27 @@
 name: Deploy Spring Boot App to Local Windows 11
 
-# Enables manual execution from the Actions tab
 on:
   workflow_dispatch:
 
 jobs:
   deploy:
-    # This targets your self-hosted Windows 11 runner app
     runs-on: self-hosted
 
     steps:
       - name: Ensure Target Directory Exists and Sync Code
         shell: cmd
         run: |
-          :: 1. Verify and create the sim-ci deployment directory if missing
-          if not exist "C:\RajWork\2026\JIM\SpringBoot\sim-ci" (
-              mkdir "C:\RajWork\2026\JIM\SpringBoot\sim-ci"
+          :: 1. Verify and create the deployment directory if missing
+          if not exist "C:\RajWork\2026\JIM\SpringBoot\beginner" (
+              mkdir "C:\RajWork\2026\JIM\SpringBoot\beginner"
           )
           
-          cd /d "C:\RajWork\2026\JIM\SpringBoot\sim-ci"
+          cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner"
           
           :: 2. Initialize git repository if it hasn't been set up yet
           if not exist .git (
               git init
-              git remote add origin https://github.com/isk6708/springboot-series.git
+              git remote add origin https://github.com
               git fetch origin advanced
               git checkout -b advanced origin/advanced
           ) else (
@@ -37,13 +35,13 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17' # Adjust to '11' or '21' based on your project configuration
+          java-version: '17'
 
       - name: Build Spring Boot Application
         shell: cmd
         run: |
-          :: Navigate directly to your targeted beginner/niise-demo folder
-          cd /d "C:\RajWork\2026\JIM\SpringBoot\sim-ci\beginner\niise-demo"
+          :: Navigate deep into your specific niise-demo subfolder inside the target folder
+          cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner\niise-demo"
           
           :: Compile and Package the application
           call mvnw.cmd clean package -DskipTests
