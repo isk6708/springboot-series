@@ -1,6 +1,10 @@
 name: Deploy Spring Boot App to Local Windows 11
 
+# Temporary dual-trigger to force GitHub to register the file on this branch
 on:
+  push:
+    branches:
+      - advanced
   workflow_dispatch:
 
 jobs:
@@ -11,7 +15,6 @@ jobs:
       - name: Stop Existing Spring Boot Application Instance
         shell: cmd
         run: |
-          :: Search for any running task occupying your customized port 8005
           echo Checking for existing process on port 8005...
           for /f "tokens=5" %%a in ('netstat -aon ^| findstr :8005 ^| findstr LISTENING') do (
               echo Found running application with PID %%a. Terminating process...
@@ -21,17 +24,13 @@ jobs:
       - name: Sync Git Code Repo
         shell: cmd
         run: |
-          :: Ensure we are working inside the true git root folder
           cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner"
-          
-          :: Initialize git safely if it hasn't been set up in this specific runner workspace yet
           if not exist .git (
               git init
               git remote add origin https://github.com
               git fetch origin advanced
               git checkout -b advanced origin/advanced
           ) else (
-              :: Fetch newest code changes safely while discarding local workspace modifications
               git checkout advanced
               git fetch origin advanced
               git reset --hard origin/advanced
@@ -46,20 +45,14 @@ jobs:
       - name: Build Spring Boot Application
         shell: cmd
         run: |
-          :: Navigate directly to where the pom.xml and mvnw.cmd files reside
           cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner\niise-demo"
-          
-          :: Compile and Package the application
           call mvnw.cmd clean package -DskipTests
 
       - name: Deliver Executable Artifact to Deployment Folder
         shell: cmd
         run: |
-          :: Create a dedicated delivery folder outside the source tree if it doesn't exist
           if not exist "C:\RajWork\2026\JIM\SpringBoot\deploy-bin" (
               mkdir "C:\RajWork\2026\JIM\SpringBoot\deploy-bin"
           )
-          
-          :: Copy the freshly generated jar file to your deployment directory
           echo Copying production artifact...
           copy /Y "C:\RajWork\2026\JIM\SpringBoot\beginner\niise-demo\target\*.jar" "C:\RajWork\2026\JIM\SpringBoot\deploy-bin\"
