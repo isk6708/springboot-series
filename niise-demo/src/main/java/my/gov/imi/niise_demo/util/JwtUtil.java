@@ -62,11 +62,17 @@ public class JwtUtil {
 
     private String createToken(Map<String, Object> claims, String subject) {
         // Updated builder structure conforming to contemporary JJWT specification requirements
+
+        
+        // 10 hours in milliseconds = 36,000,000
+        long jwtExpirationInMs = 1000 * 60 * 60 * 10; 
+        // 5 minutes in milliseconds = 300,000
+        // long jwtExpirationInMs = 1000 * 60 * 5; 
         return Jwts.builder()
                 .claims(claims)
                 .subject(subject)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 Hours expiration window
+                .expiration(new Date(System.currentTimeMillis() + jwtExpirationInMs)) // 5 Minutes expiration window
                 .signWith(getSigningKey())
                 .compact();
     }
