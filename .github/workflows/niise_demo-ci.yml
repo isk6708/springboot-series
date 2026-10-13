@@ -11,27 +11,12 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Stop Existing Spring Boot Application Instance
-        shell: cmd
-        run: |
-          echo Checking for existing process on port 8005...
-          netstat -aon | findstr :8005 | findstr LISTENING >nul 2>&1
-          if %errorlevel% equ 0 (
-              echo Found an active application process. Terminating...
-              for /f "tokens=5" %%a in ('netstat -aon ^| findstr :8005 ^| findstr LISTENING') do (
-                  taskkill /F /PID %%a
-              )
-          ) else (
-              echo No active process found running on port 8005. Safe to proceed!
-          )
-
       - name: Sync Git Code Repo
         shell: cmd
         run: |
           cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner"
           if not exist .git (
               git init
-              :: FIXED: Restored your real, complete repository endpoint string
               git remote add origin https://github.com
               git fetch origin advanced
               git checkout -b advanced origin/advanced
