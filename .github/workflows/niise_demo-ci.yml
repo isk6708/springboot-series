@@ -18,12 +18,12 @@ jobs:
           if not exist .git (
               git init
               git remote add origin https://github.com
-              git fetch origin advanced
-              git checkout -b advanced origin/advanced
+              git fetch origin main
+              git checkout -b main origin/main
           ) else (
-              git checkout advanced
-              git fetch origin advanced
-              git reset --hard origin/advanced
+              git checkout main
+              git fetch origin main
+              git reset --hard origin/main
           )
 
       - name: Set Up Java Environment
@@ -41,15 +41,15 @@ jobs:
       - name: Deliver Executable Artifact to Deployment Folder
         shell: cmd
         run: |
-          if not exist "C:\RajWork\2026\JIM\SpringBoot\deploy-bin" (
-              mkdir "C:\RajWork\2026\JIM\SpringBoot\deploy-bin"
+          if not exist "C:\niise-deployment" (
+              mkdir "C:\niise-deployment"
           )
           echo Copying production artifact...
-          copy /Y "C:\RajWork\2026\JIM\SpringBoot\beginner\niise-demo\target\*.jar" "C:\RajWork\2026\JIM\SpringBoot\deploy-bin\"
+          copy /Y "C:\RajWork\2026\JIM\SpringBoot\beginner\niise-demo\target\*.jar" "C:\niise-deployment\"
 
       - name: Automatically Start Spring Boot Application
         shell: cmd
         run: |
-          cd /d "C:\RajWork\2026\JIM\SpringBoot\deploy-bin"
+          cd /d "C:\niise-deployment"
           echo Starting the new application version in the background...
-          start /B javaw -jar niise-demo-0.0.1-SNAPSHOT.jar
+          for %%i in (*.jar) do start /B javaw -jar "%%i"

@@ -84,6 +84,7 @@ Login function - token -
 	filters/JwtRequestFilter.java
 	config/AppConfig.java
 	pom.xml - Security related
+	PenggunaController.java
 	
 
 		- OAuth2.0, SSO - MyDigitalID, CIS
@@ -98,6 +99,18 @@ eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJoYXppZXFAZ21haWwuY29tIiwiaWF0IjoxNzkxNzc0ODI5LCJ
 
 
 
+Day 6
+MySQL
+ - cmd prompt
+ - laragon
+ - xampp / wampp / lampp
+
+mvn test -Dtest=PassportControllerVerTwoTest
+
+
+
+
+
 
 
 java -jar "C:\RajWork\2026\JIM\springboot-series\deployed_app\bin\niise-demo-0.0.1-SNAPSHOT.jar"
@@ -106,4 +119,40 @@ Useful background management commands:
 • To check the live startup logs: Receive-Job -Name "NiiseDemoServer" -Keep
 • To see if it's still running: Get-Job -Name "NiiseDemoServer"
 • To stop the server completely: Stop-Job -Name "NiiseDemoServer"
+
+
+
+Day 7
+------------
+
+git init
+git branch -M main
+git status
+git add .
+git commit -m "Kali pertama"
+
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+
+git remote add origin https://github.com/isk6708/niise-demo.git
+git push -u origin main
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
