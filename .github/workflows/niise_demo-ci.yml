@@ -13,8 +13,11 @@ jobs:
     steps:
       - name: Sync Git Code Repo
         shell: cmd
+        env:
+            GITHUB_ACTIONS_RUNNER_TLS_NO_VERIFY: "1"
+            NODE_TLS_REJECT_UNAUTHORIZED: "0"
         run: |
-          cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner"
+          cd /d "C:\RajWork\2026\JIM\springboot-series\niise-demo"
           if not exist .git (
               git init
               git remote add origin https://github.com
@@ -35,7 +38,7 @@ jobs:
       - name: Build Spring Boot Application
         shell: cmd
         run: |
-          cd /d "C:\RajWork\2026\JIM\SpringBoot\beginner\niise-demo"
+          cd /d "C:\RajWork\2026\JIM\springboot-series\niise-demo"
           call mvnw.cmd clean package -DskipTests
 
       - name: Deliver Executable Artifact to Deployment Folder
@@ -45,7 +48,7 @@ jobs:
               mkdir "C:\niise-deployment"
           )
           echo Copying production artifact...
-          copy /Y "C:\RajWork\2026\JIM\SpringBoot\beginner\niise-demo\target\*.jar" "C:\niise-deployment\"
+          copy /Y "C:\RajWork\2026\JIM\springboot-series\niise-demo\target\*.jar" "C:\niise-deployment\"
 
       - name: Automatically Start Spring Boot Application
         shell: cmd
