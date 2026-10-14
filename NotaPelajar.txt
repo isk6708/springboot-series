@@ -137,6 +137,22 @@ git config --global user.email "your.email@example.com"
 git remote add origin https://github.com/isk6708/niise-demo.git
 git push -u origin main
 
+new folder
+.github/workflows
+
+
+git status
+git add .
+git commit -m "Enable CI"
+git push
+
+CMDPROMT - set GITHUB_ACTIONS_RUNNER_TLS_NO_VERIFY=1
+POWERSHELL - $env:GITHUB_ACTIONS_RUNNER_TLS_NO_VERIFY=1
+
+
+
+
+
 
 
 
