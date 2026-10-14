@@ -1,5 +1,6 @@
 package my.gov.imi.niise_demo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -155,6 +156,29 @@ class PassportControllerVerTwoTest {
             assertThat(result.getIcno()).isEqualTo("900101");
         }
 
+        @Test
+        @DisplayName("Should filter dash in ICNo")
+    void postPassportAdminNoDashMapsRequestAndReturnsAdminDto() {
+            PassportAdminDto request = new PassportAdminDto();
+            request.setFullname("Ali");
+            request.setIcno("900-101");
+            when(service.addPassport(org.mockito.ArgumentMatchers.any(Passport.class)))
+                    .thenAnswer(invocation -> {
+                        Passport saved = invocation.getArgument(0);
+                        saved.setId(5);
+                        return saved;
+                    });
+
+            PassportAdminDto result = controller.postPassportAdminNoDash(request);
+
+            ArgumentCaptor<Passport> passportCaptor = ArgumentCaptor.forClass(Passport.class);
+            verify(service).addPassport(passportCaptor.capture());
+            assertEquals("900101", passportCaptor.getValue().getIcno());
+            assertEquals(5, result.getId());
+            assertEquals("Ali", result.getFullname());
+            assertEquals("900101", result.getIcno());
+        }
+        
         @Test
         @DisplayName("Should propagate exception thrown by the service on create")
         void postPassportPropagatesServiceException() {
