@@ -10,11 +10,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.persistence.Table;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "tasks")
 public class TodoEntity {
 
     @Id
