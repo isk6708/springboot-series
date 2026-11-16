@@ -41,6 +41,30 @@ Pemasangan / Installation
 
 mvn spring-boot:run
 
+sqlite: heitechdb
+
+table: todo
+
+id
+title
+description
+completed
+
+users
+
+id
+email
+fullname
+hash_password
+
+
+
+
+
+
+
+
+
 
 
 
