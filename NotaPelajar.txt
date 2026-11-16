@@ -39,6 +39,8 @@ Pemasangan / Installation
    node -v
 
 
+mvn spring-boot:run
+
 
 
 
