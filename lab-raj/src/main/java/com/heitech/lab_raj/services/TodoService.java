@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import com.heitech.lab_raj.exceptions.NotFoundException;
 
 @Service
 public class TodoService {
@@ -31,9 +32,13 @@ public class TodoService {
     }
 
     public TodoEntity updatePublicTodo(Integer id, TodoEntity updatedTodo) {
+        // TodoEntity existing = todoRepository.findById(id)
+        //         .filter(t -> t.getUserId() == null)
+        //         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Public todo not found"));
         TodoEntity existing = todoRepository.findById(id)
-                .filter(t -> t.getUserId() == null)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Public todo not found"));
+            .filter(t -> t.getUserId() == null)
+            .orElseThrow(() -> new NotFoundException("Public todo not found with id: " + id));
+    
 
         existing.setTitle(updatedTodo.getTitle());
         existing.setDescription(updatedTodo.getDescription());
@@ -46,7 +51,8 @@ public class TodoService {
     public void deletePublicTodo(Integer id) {
         TodoEntity existing = todoRepository.findById(id)
                 .filter(t -> t.getUserId() == null)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Public todo not found"));
+                .orElseThrow(() -> new NotFoundException("Public todo not found with id: " + id));
+            
 
         todoRepository.delete(existing);
     }
@@ -65,7 +71,7 @@ public class TodoService {
 
     public TodoEntity updateUserTodo(Integer id, Integer userId, TodoEntity updatedTodo) {
         TodoEntity existing = todoRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found for this user"));
+                .orElseThrow(() -> new NotFoundException("Todo not found for this user with id: " + id));
 
         existing.setTitle(updatedTodo.getTitle());
         existing.setDescription(updatedTodo.getDescription());
@@ -77,7 +83,7 @@ public class TodoService {
 
     public void deleteUserTodo(Integer id, Integer userId) {
         TodoEntity existing = todoRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found for this user"));
+                .orElseThrow(() -> new NotFoundException("Todo not found for this user with id: " + id));
 
         todoRepository.delete(existing);
     }
