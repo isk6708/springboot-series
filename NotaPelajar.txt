@@ -1,0 +1,7 @@
+HeiTech WIFI
+Password: HJRQ5EB5FD7
+SSID: HUAWEI-B618-4AFE
+
+Training Material
+repo: github.com/isk6708/springboot-series
+branch: nov-2026
