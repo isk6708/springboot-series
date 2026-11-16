@@ -58,6 +58,18 @@ fullname
 hash_password
 
 
+sqlite3 heitechdata.db ".tables"
+
+
+curl.exe -X POST http://localhost:8116/api/v1/todos -H "Content-Type: application/json" -d "{\"title\":\"Test Todo\",\"description\":\"Created on port 8116\",\"completed\":false}"
+
+curl.exe http://localhost:8116/api/v1/todos
+
+sqlite3 heitechdata.db "SELECT * FROM tasks;"
+
+
+
+
 
 
 
