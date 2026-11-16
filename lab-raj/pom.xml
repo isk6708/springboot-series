@@ -65,6 +65,12 @@
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Start model mapper -->
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+		</dependency>
+		<!-- End model mapper -->
 	</dependencies>
 
 	<build>
