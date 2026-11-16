@@ -20,7 +20,8 @@ public class TodoService {
     // ==================== PUBLIC TODOS ====================
 
     public List<TodoEntity> getAllPublicTodos() {
-        return todoRepository.findByUserIdIsNull();
+        // return todoRepository.findByUserIdIsNull();
+        return todoRepository.findAll();
     }
 
     public TodoEntity createPublicTodo(TodoEntity todo) {
