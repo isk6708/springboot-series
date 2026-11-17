@@ -12,4 +12,5 @@ export class TodoApiService {
   getAll(): Observable<Todo[]> {
     return this.http.get<Todo[]>(this.apiUrl);
   }
+  
 }

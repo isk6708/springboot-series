@@ -1,38 +1,37 @@
-import { Component,inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Todo } from '../../models/task.model';
 import { TodoApiService } from '../../apis/todo-api';
 
 @Component({
   selector: 'app-task',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './task.html',
   styleUrl: './task.css',
 })
 export class TaskComponent implements OnInit {
   private todoApiService = inject(TodoApiService);
 
-  todoList: Todo[] = [];
-  isLoading = false;
-  errorMessage = '';
+  todoList = signal<Todo[]>([]);
+  isLoading = signal(false);
+  errorMessage = signal('');
 
   ngOnInit(): void {
     this.loadTodos();
   }
 
   loadTodos(): void {
-    this.isLoading = true;
-    this.errorMessage = '';
+    this.isLoading.set(true);
+    this.errorMessage.set('');
 
     this.todoApiService.getAll().subscribe({
       next: (data) => {
-        this.todoList = data;
-        this.isLoading = false;
+        this.todoList.set(data);
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.error('Failed to fetch todos:', err);
-        this.errorMessage = 'Could not load todos from server.';
-        this.isLoading = false;
+        this.errorMessage.set('Could not load todos from server.');
+        this.isLoading.set(false);
       }
     });
   }

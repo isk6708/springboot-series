@@ -5,23 +5,23 @@
       <p class="task-subtitle">Tasks synced from Spring Boot API</p>
     </div>
 
-    <button type="button" class="btn-refresh" (click)="loadTodos()" [disabled]="isLoading">
-      {{ isLoading ? 'Loading...' : '↻ Refresh' }}
+    <button type="button" class="btn-refresh" (click)="loadTodos()" [disabled]="isLoading()">
+      {{ isLoading() ? 'Loading...' : '↻ Refresh' }}
     </button>
   </div>
 
-  @if (isLoading) {
+  @if (isLoading()) {
     <div class="state-box loading">
       <span class="spinner" aria-hidden="true"></span>
       <span>Loading tasks...</span>
     </div>
-  } @else if (errorMessage) {
+  } @else if (errorMessage()) {
     <div class="state-box error" role="alert">
-      <strong>Error:</strong> {{ errorMessage }}
+      <strong>Error:</strong> {{ errorMessage() }}
     </div>
   } @else {
     <ul class="todo-list">
-      @for (todo of todoList; track todo.id) {
+      @for (todo of todoList(); track todo.id) {
         <li class="todo-card" [class.completed]="todo.completed">
           <div class="todo-info">
             <h3 class="todo-title">{{ todo.title }}</h3>
