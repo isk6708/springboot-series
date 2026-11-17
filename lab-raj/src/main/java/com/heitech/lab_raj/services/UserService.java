@@ -10,7 +10,7 @@ import com.heitech.lab_raj.repositories.UserRepository;
 import com.heitech.lab_raj.repositories.TodoRepository;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Integer;
 
 @Service
 public class UserService {
@@ -36,7 +36,7 @@ public class UserService {
     }
 
     // Get one user (404 if missing)
-    public UserEntity getUserById(UUID id) {
+    public UserEntity getUserById(Integer id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id: " + id));
     }
@@ -56,7 +56,7 @@ public class UserService {
 
     // Update a user - password only changes when a new one is sent
     @Transactional
-    public UserEntity updateUser(UUID id, UserEntity request) {
+    public UserEntity updateUser(Integer id, UserEntity request) {
         UserEntity existing = getUserById(id);
 
         userRepository.findByEmail(request.getEmail())
@@ -76,9 +76,9 @@ public class UserService {
     // Delete a user (404 if missing) together with the user's private todos,
     // otherwise todo.user_id would point to a user that no longer exists
     @Transactional
-    public void deleteUser(UUID id) {
+    public void deleteUser(Integer id) {
         UserEntity user = getUserById(id);
         // todoRepository.deleteByUser(user);
-        // userRepository.delete(user);
+        userRepository.delete(user);
     }
 }

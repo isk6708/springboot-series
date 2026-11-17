@@ -81,6 +81,8 @@ tasks/todo/users - table
 model - TodoEntity/UserEntity
 repository - TodoRepository/UserRepository
 service - TodoService/UserService
+dto - TodoDto/UserDto
+controller - TodoController/UserController
 
 
 
