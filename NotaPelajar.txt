@@ -37,7 +37,10 @@ Pemasangan / Installation
 2. IDE - Vscode
 3. Node.js
    node -v
+4. Maven 
+    mvn -v
 
+Initialzr - https://start.spring.io/
 
 mvn spring-boot:run
 
@@ -60,12 +63,22 @@ hash_password
 
 sqlite3 heitechdata.db ".tables"
 
+mvn spring-boot:run
+
+http://localhost:8116/swagger-ui.html
 
 curl.exe -X POST http://localhost:8116/api/v1/todos -H "Content-Type: application/json" -d "{\"title\":\"Test Todo\",\"description\":\"Created on port 8116\",\"completed\":false}"
 
 curl.exe http://localhost:8116/api/v1/todos
+http://localhost:8116/api/v1/todos
+
 
 sqlite3 heitechdata.db "SELECT * FROM tasks;"
+
+Day 2
+------
+tasks/todo/users - table
+model - TodoEntity/UserEntity
 
 
 
