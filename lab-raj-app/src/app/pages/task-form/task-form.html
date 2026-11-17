@@ -1,0 +1,58 @@
+<form #todoForm="ngForm" (ngSubmit)="onSubmit(todoForm)" class="task-form-card" novalidate>
+  <h3 class="form-title">New Task</h3>
+
+  @if (formError()) {
+    <div class="form-error">{{ formError() }}</div>
+  }
+
+  <div class="form-group">
+    <label for="title">Title <span class="required">*</span></label>
+    <input
+      id="title"
+      name="title"
+      type="text"
+      required
+      minlength="2"
+      [(ngModel)]="title"
+      #titleInput="ngModel"
+      placeholder="e.g., Complete Spring Boot API"
+    />
+    @if (titleInput.invalid && (titleInput.dirty || titleInput.touched)) {
+      <small class="validation-msg">Title is required (at least 2 characters).</small>
+    }
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea
+      id="description"
+      name="description"
+      rows="2"
+      [(ngModel)]="description"
+      placeholder="Optional task details..."
+    ></textarea>
+  </div>
+
+  <div class="form-checkbox">
+    <input
+      id="completed"
+      name="completed"
+      type="checkbox"
+      [(ngModel)]="completed"
+    />
+    <label for="completed">Mark as already completed</label>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="btn-cancel" (click)="cancelled.emit()">
+      Cancel
+    </button>
+    <button
+      type="submit"
+      class="btn-submit"
+      [disabled]="todoForm.invalid || isSubmitting()"
+    >
+      {{ isSubmitting() ? 'Saving...' : 'Save Task' }}
+    </button>
+  </div>
+</form>

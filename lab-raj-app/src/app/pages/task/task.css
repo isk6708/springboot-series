@@ -23,6 +23,28 @@
   color: #0f172a;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.btn-add {
+  background-color: #6db33f;
+  color: #0f172a;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-add:hover {
+  background-color: #5ea032;
+}
+
 .task-subtitle {
   margin: 0.2rem 0 0;
   font-size: 0.88rem;
