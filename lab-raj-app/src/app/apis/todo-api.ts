@@ -13,8 +13,8 @@ export class TodoApiService {
     return this.http.get<Todo[]>(this.apiUrl);
   }
 
-  createTask(todo: NewTodo): Observable<NewTodo> {
-    return this.http.post<NewTodo>(this.apiUrl, todo);
+  createTask(todo: NewTodo): Observable<Todo> {
+    return this.http.post<Todo>(this.apiUrl, todo);
   }
 
   updateTask(id: number, todo: Todo): Observable<Todo> {
