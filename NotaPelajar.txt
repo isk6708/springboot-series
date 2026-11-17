@@ -80,6 +80,7 @@ Day 2
 tasks/todo/users - table
 model - TodoEntity/UserEntity
 repository - TodoRepository/UserRepository
+service - TodoService/UserService
 
 
 

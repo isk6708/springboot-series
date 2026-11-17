@@ -80,6 +80,12 @@
 			<version>2.8.5</version>
 		</dependency>
 		<!-- End Openapi -->
+		<!-- Start Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<!-- End Security -->
 	</dependencies>
 
 	<build>
