@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {Todo} from '../models/task.model';
+import {NewTodo, Todo} from '../models/task.model';
 
 @Injectable({ providedIn: 'root' })
 export class TodoApiService {
@@ -11,6 +11,18 @@ export class TodoApiService {
   // [ITERATION 2] READ ALL: GET /api/todos
   getAll(): Observable<Todo[]> {
     return this.http.get<Todo[]>(this.apiUrl);
+  }
+
+  createTask(todo: NewTodo): Observable<NewTodo> {
+    return this.http.post<NewTodo>(this.apiUrl, todo);
+  }
+
+  updateTask(id: number, todo: Todo): Observable<Todo> {
+    return this.http.put<Todo>(`${this.apiUrl}/${id}`, todo);
+  }
+
+  deleteTask(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
   
 }
