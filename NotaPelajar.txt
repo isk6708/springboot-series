@@ -78,12 +78,21 @@ sqlite3 heitechdata.db "SELECT * FROM tasks;"
 Day 2
 ------
 tasks/todo/users - table
+
 model - TodoEntity/UserEntity
 repository - TodoRepository/UserRepository
 service - TodoService/UserService
 dto - TodoDto/UserDto
 controller - TodoController/UserController
 
+
+Angular Framework
+---------------
+ng --version
+npm install -g @angular/cli
+npm install -g @angular/cli@15
+
+ng new lab-raj-app
 
 
 
