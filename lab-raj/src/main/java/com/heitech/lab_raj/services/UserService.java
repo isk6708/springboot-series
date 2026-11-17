@@ -51,6 +51,7 @@ public class UserService {
         user.setEmail(request.getEmail());
         user.setFullname(request.getFullname());
         // user.setHashPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(request.getPassword()); 
         return userRepository.save(user);
     }
 
@@ -69,6 +70,7 @@ public class UserService {
         existing.setFullname(request.getFullname());
         if (request.getPassword() != null && !request.getPassword().isBlank()) {
             // existing.setHashPassword(passwordEncoder.encode(request.getPassword()));
+            existing.setPassword(request.getPassword());
         }
         return userRepository.save(existing);
     }
