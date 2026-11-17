@@ -93,6 +93,19 @@ npm install -g @angular/cli
 npm install -g @angular/cli@15
 
 ng new lab-raj-app
+cd lab-raj-app
+npm install --legacy-peer-deps
+
+
+ng g c header
+ng g c navbar
+ng g c pages/task
+ng g c pages/user
+
+ng g i models/task --type=model
+ng g s apis/todo-api
+
+
 
 
 

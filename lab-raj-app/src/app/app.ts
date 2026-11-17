@@ -11,4 +11,5 @@ import { NavbarComponent } from './navbar/navbar';
 })
 export class App {
   protected readonly title = signal('Radja');
+  subtopic = 'Pengajian Angular';
 }
