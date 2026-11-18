@@ -110,6 +110,8 @@ ng g s apis/todo-api
 ng g s apis/auth-api
 
 ng g i models/auth --type=model
+ng g interceptor interceptors/auth
+
 
 
 
