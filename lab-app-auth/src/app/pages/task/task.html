@@ -1,0 +1,78 @@
+<section class="task-container">
+  <div class="task-header">
+    <div>
+      <h2>My Todos</h2>
+      <p class="task-subtitle">Tasks synced from Spring Boot API</p>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="btn-add" (click)="showForm() ? closeForm() : openCreateForm()">
+        {{ showForm() ? '✕ Close Form' : '+ Add Task' }}
+      </button>
+
+      <button type="button" class="btn-refresh" (click)="loadTodos()" [disabled]="isLoading()">
+        {{ isLoading() ? 'Loading...' : '↻ Refresh' }}
+      </button>
+    </div>
+  </div>
+
+  @if (showForm()) {
+    <app-task-form
+      [editingTodo]="selectedTodo()"
+      (todoSaved)="onTodoSaved($event)"
+      (cancelled)="closeForm()"
+    />
+  }
+
+  @if (isLoading()) {
+    <div class="state-box loading">
+      <span class="spinner" aria-hidden="true"></span>
+      <span>Loading tasks...</span>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="state-box error" role="alert">
+      <strong>Error:</strong> {{ errorMessage() }}
+    </div>
+  } @else {
+    <ul class="todo-list">
+      @for (todo of todoList(); track todo.id) {
+        <li class="todo-card" [class.completed]="todo.completed">
+          <div class="todo-main">
+            <input
+              type="checkbox"
+              class="todo-checkbox"
+              [checked]="todo.completed"
+              (change)="toggleComplete(todo)"
+              [attr.aria-label]="'Mark ' + todo.title + ' as ' + (todo.completed ? 'pending' : 'done')"
+            />
+
+            <div class="todo-info">
+              <h3 class="todo-title">{{ todo.title }}</h3>
+              @if (todo.description) {
+                <p class="todo-desc">{{ todo.description }}</p>
+              }
+            </div>
+          </div>
+
+          <div class="todo-actions">
+            <span class="status-pill" [class.done]="todo.completed">
+              {{ todo.completed ? '✓ Done' : '⏳ Pending' }}
+            </span>
+
+            <button type="button" class="btn-icon edit" (click)="openEditForm(todo)" title="Edit task">
+              ✎ Edit
+            </button>
+
+            <button type="button" class="btn-icon delete" (click)="deleteTodo(todo)" title="Delete task">
+              🗑 Delete
+            </button>
+          </div>
+        </li>
+      } @empty {
+        <li class="state-box empty">
+          No todos found. Click <strong>+ Add Task</strong> above to create your first task!
+        </li>
+      }
+    </ul>
+  }
+</section>
