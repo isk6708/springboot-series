@@ -100,10 +100,16 @@ npm install --legacy-peer-deps
 ng g c header
 ng g c navbar
 ng g c pages/task
+ng g c pages/task-form
 ng g c pages/user
+ng g c pages/login
+ng g c pages/register
 
 ng g i models/task --type=model
 ng g s apis/todo-api
+ng g s apis/auth-api
+
+ng g i models/auth --type=model
 
 
 
