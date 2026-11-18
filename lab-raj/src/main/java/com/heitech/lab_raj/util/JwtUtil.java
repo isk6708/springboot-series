@@ -65,7 +65,9 @@ public class JwtUtil {
 
         
         // 10 hours in milliseconds = 36,000,000
-        long jwtExpirationInMs = 1000 * 60 * 60 * 10; 
+        // long jwtExpirationInMs = 1000 * 60 * 60 * 10; 
+        // 1 Minute
+        long jwtExpirationInMs = 1000 * 60 * 1;   // 1 minute – TESTING ONLY
         // 5 minutes in milliseconds = 300,000
         // long jwtExpirationInMs = 1000 * 60 * 5; 
         return Jwts.builder()
