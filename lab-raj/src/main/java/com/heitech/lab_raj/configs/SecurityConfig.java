@@ -51,23 +51,23 @@ public class SecurityConfig {
 
         return new InMemoryUserDetailsManager(admin);
     }
-    // @Bean
-    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    //     http
-    //         .csrf(csrf -> csrf.disable())
-    //         .cors(Customizer.withDefaults())
-    //         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-    //         .authorizeHttpRequests(auth -> auth
-    //             // 1. Preserve existing public Todo endpoints & Swagger UI
-    //             .requestMatchers("/api/todos/**", "/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-    //             // 2. Require JWT authentication for the new protected endpoints
-    //             .requestMatchers("/api/protected/**").authenticated()
-    //             .anyRequest().permitAll()
-    //         )
-    //         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable());
+            // .cors(Customizer.withDefaults())
+            // .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // .authorizeHttpRequests(auth -> auth
+            //     // 1. Preserve existing public Todo endpoints & Swagger UI
+            //     .requestMatchers("/api/v1/todos/**", "/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+            //     // 2. Require JWT authentication for the new protected endpoints
+            //     .requestMatchers("/api/protected/**").authenticated()
+            //     .anyRequest().permitAll()
+            // )
+            // .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-    //     return http.build();
-    // }
+        return http.build();
+    }
 
     // @Bean
     // public CorsConfigurationSource corsConfigurationSource() {
