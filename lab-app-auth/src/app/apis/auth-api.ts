@@ -2,7 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, map, tap } from 'rxjs';
-// import { API_BASE_URL } from './api.config';
+import { API_BASE_URL } from './api.config';
 import {
   AuthUser,
   BackendUser,
@@ -19,10 +19,10 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private apiUrl = 'http://localhost:8116/api/v1/';
+  private apiUrl = API_BASE_URL;
 
-  private loginUrl = `${this.apiUrl}login`;
-  private registerUrl = `${this.apiUrl}users/register`;
+  private loginUrl = `${this.apiUrl}/login`;
+  private registerUrl = `${this.apiUrl}/users/register`;
 
   // Signals = the UI (e.g. Navbar) updates automatically when we log in / out
   private token = signal<string | null>(localStorage.getItem(TOKEN_KEY));

@@ -2,11 +2,12 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {NewTodo, Todo} from '../models/task.model';
+import { API_BASE_URL } from './api.config';
 
 @Injectable({ providedIn: 'root' })
 export class TodoApiService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8116/api/v1/todos';
+  private apiUrl = `${API_BASE_URL}/todos`;
 
   // [ITERATION 2] READ ALL: GET /api/todos
   getAll(): Observable<Todo[]> {
