@@ -1,0 +1,45 @@
+<form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="task-form-card" novalidate>
+  <h3 class="form-title">Sign in</h3>
+
+  @if (justRegistered) {
+    <div class="form-success">Account created. Please sign in.</div>
+  }
+
+  @if (formError()) {
+    <div class="form-error">{{ formError() }}</div>
+  }
+
+  <div class="form-group">
+    <label for="email">Email <span class="required">*</span></label>
+    <input
+      id="email" name="email" type="email" required email
+      [(ngModel)]="email" #emailInput="ngModel"
+      placeholder="admin@heitech.com" autocomplete="username"
+    />
+    @if (emailInput.invalid && (emailInput.dirty || emailInput.touched)) {
+      <small class="validation-msg">A valid email is required.</small>
+    }
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password <span class="required">*</span></label>
+    <input
+      id="password" name="password" type="password" required
+      [(ngModel)]="password" #passwordInput="ngModel"
+      autocomplete="current-password"
+    />
+    @if (passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)) {
+      <small class="validation-msg">Password is required.</small>
+    }
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn-submit" [disabled]="loginForm.invalid || isSubmitting()">
+      {{ isSubmitting() ? 'Signing in...' : 'Sign in' }}
+    </button>
+  </div>
+
+  <p class="form-switch">
+    No account yet? <a routerLink="/register">Create one</a>
+  </p>
+</form>
