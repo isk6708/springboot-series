@@ -119,6 +119,21 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+
+			<!-- Start: builds an executable "fat" JAR (Main-Class + all libraries inside) -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<!-- End: executable JAR -->
 		</plugins>
 	</build>
 
