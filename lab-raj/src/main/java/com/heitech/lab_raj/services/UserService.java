@@ -1,7 +1,7 @@
 package com.heitech.lab_raj.services;
 
 import org.springframework.http.HttpStatus;
-// import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,14 +16,14 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    // private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final TodoRepository todoRepository;
 
     // Constructor injection
-    // public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TodoRepository todoRepository) {
-    public UserService(UserRepository userRepository,  TodoRepository todoRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TodoRepository todoRepository) {
+    // public UserService(UserRepository userRepository,  TodoRepository todoRepository) {
         this.userRepository = userRepository;
-        // this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
         this.todoRepository = todoRepository;
     }
 
@@ -50,8 +50,8 @@ public class UserService {
         UserEntity user = new UserEntity();
         user.setEmail(request.getEmail());
         user.setFullname(request.getFullname());
-        // user.setHashPassword(passwordEncoder.encode(request.getPassword()));
-        user.setPassword(request.getPassword()); 
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        // user.setPassword(request.getPassword()); 
         return userRepository.save(user);
     }
 
@@ -69,8 +69,8 @@ public class UserService {
         existing.setEmail(request.getEmail());
         existing.setFullname(request.getFullname());
         if (request.getPassword() != null && !request.getPassword().isBlank()) {
-            // existing.setHashPassword(passwordEncoder.encode(request.getPassword()));
-            existing.setPassword(request.getPassword());
+            existing.setPassword(passwordEncoder.encode(request.getPassword()));
+            // existing.setPassword(request.getPassword());
         }
         return userRepository.save(existing);
     }
