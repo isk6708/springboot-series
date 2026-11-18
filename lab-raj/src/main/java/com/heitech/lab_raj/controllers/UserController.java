@@ -34,6 +34,14 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> register(@Valid @RequestBody UserDto UserDto) {
+        UserEntity entity = modelMapper.map(UserDto, UserEntity.class);
+        UserEntity saved = UserService.createUser(entity);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(modelMapper.map(saved, UserDto.class));
+    }
+    
     @PostMapping
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto UserDto) {
         UserEntity entity = modelMapper.map(UserDto, UserEntity.class);
