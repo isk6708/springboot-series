@@ -28,7 +28,8 @@ RUN chmod +x mvnw && ./mvnw -B -q dependency:go-offline
 
 # Source code + Angular static files
 COPY lab-raj/src/ src/
-COPY --from=frontend /build/lab-app-auth/dist/lab-raj-app/browser/ src/main/resources/static/
+# COPY --from=frontend /build/lab-app-auth/dist/lab-raj-app/browser/ src/main/resources/static/
+COPY --from=frontend /build/lab-app-auth/dist/lab-app-auth/browser/ src/main/resources/static/
 
 # Tests are SKIPPED: -Dmaven.test.skip=true = do not compile AND do not run tests
 RUN ./mvnw -B -Dmaven.test.skip=true package
