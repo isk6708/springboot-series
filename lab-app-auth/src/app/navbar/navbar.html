@@ -1,13 +1,40 @@
 <nav class="app-navbar" aria-label="Main Navigation">
   <div class="nav-container">
-    <a routerLink="/todos" routerLinkActive="active" class="nav-link">
-      <span class="nav-icon" aria-hidden="true">☑</span>
-      <span>My Todos</span>
-    </a>
+    @if (auth.isLoggedIn()) {
+      <!-- ===== Logged in ===== -->
+      <a routerLink="/todos" routerLinkActive="active" class="nav-link">
+        <span class="nav-icon" aria-hidden="true">☑</span>
+        <span>My Todos</span>
+      </a>
 
-    <a routerLink="/users" routerLinkActive="active" class="nav-link">
-      <span class="nav-icon" aria-hidden="true">👥</span>
-      <span>Users</span>
-    </a>
+      <a routerLink="/users" routerLinkActive="active" class="nav-link">
+        <span class="nav-icon" aria-hidden="true">👥</span>
+        <span>Users</span>
+      </a>
+
+      <span class="nav-spacer"></span>
+
+      <span class="nav-user" [title]="auth.currentUser()?.email">
+        👤 {{ auth.currentUser()?.fullname }}
+      </span>
+
+      <button type="button" class="nav-link nav-logout" (click)="logout()">
+        <span class="nav-icon" aria-hidden="true">⎋</span>
+        <span>Logout</span>
+      </button>
+    } @else {
+      <!-- ===== Logged out ===== -->
+      <span class="nav-spacer"></span>
+
+      <a routerLink="/login" routerLinkActive="active" class="nav-link">
+        <span class="nav-icon" aria-hidden="true">🔑</span>
+        <span>Login</span>
+      </a>
+
+      <a routerLink="/register" routerLinkActive="active" class="nav-link">
+        <span class="nav-icon" aria-hidden="true">📝</span>
+        <span>Register</span>
+      </a>
+    }
   </div>
 </nav>

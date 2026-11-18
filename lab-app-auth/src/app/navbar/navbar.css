@@ -59,3 +59,19 @@
     padding: 0.75rem 0.5rem;
   }
 }
+/* pushes the next items to the right side */
+.nav-spacer { flex: 1; }
+
+.nav-user {
+  align-self: center;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+/* make the Logout <button> look like the other nav links */
+.nav-logout {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
