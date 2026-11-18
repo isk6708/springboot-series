@@ -6,7 +6,7 @@
     </div>
 
     <div class="header-actions">
-      <button type="button" class="btn-add" (click)="toggleForm()">
+      <button type="button" class="btn-add" (click)="showForm() ? closeForm() : openCreateForm()">
         {{ showForm() ? '✕ Close Form' : '+ Add Task' }}
       </button>
 
@@ -18,8 +18,9 @@
 
   @if (showForm()) {
     <app-task-form
-      (todoCreated)="onTodoCreated($event)"
-      (cancelled)="showForm.set(false)"
+      [editingTodo]="selectedTodo()"
+      (todoSaved)="onTodoSaved($event)"
+      (cancelled)="closeForm()"
     />
   }
 
@@ -36,16 +37,36 @@
     <ul class="todo-list">
       @for (todo of todoList(); track todo.id) {
         <li class="todo-card" [class.completed]="todo.completed">
-          <div class="todo-info">
-            <h3 class="todo-title">{{ todo.title }}</h3>
-            @if (todo.description) {
-              <p class="todo-desc">{{ todo.description }}</p>
-            }
+          <div class="todo-main">
+            <input
+              type="checkbox"
+              class="todo-checkbox"
+              [checked]="todo.completed"
+              (change)="toggleComplete(todo)"
+              [attr.aria-label]="'Mark ' + todo.title + ' as ' + (todo.completed ? 'pending' : 'done')"
+            />
+
+            <div class="todo-info">
+              <h3 class="todo-title">{{ todo.title }}</h3>
+              @if (todo.description) {
+                <p class="todo-desc">{{ todo.description }}</p>
+              }
+            </div>
           </div>
 
-          <span class="status-pill" [class.done]="todo.completed">
-            {{ todo.completed ? '✓ Done' : '⏳ Pending' }}
-          </span>
+          <div class="todo-actions">
+            <span class="status-pill" [class.done]="todo.completed">
+              {{ todo.completed ? '✓ Done' : '⏳ Pending' }}
+            </span>
+
+            <button type="button" class="btn-icon edit" (click)="openEditForm(todo)" title="Edit task">
+              ✎ Edit
+            </button>
+
+            <button type="button" class="btn-icon delete" (click)="deleteTodo(todo)" title="Delete task">
+              🗑 Delete
+            </button>
+          </div>
         </li>
       } @empty {
         <li class="state-box empty">

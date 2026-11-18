@@ -1,12 +1,12 @@
 // [ITERATION 2] Data shape matching Spring Boot TodoDto (GET /api/todos)
-//   - id is a UUID, so it arrives as a string
+//   - id is a integer, so it arrives as a number
 //   - userId is always null on the public /api/todos endpoint (read-only, ignored on POST/PUT)
 export interface Todo {
-  id: string;
+  id: number;
   title: string;
   description?: string | null;
   completed: boolean;
-  userId?: string | null;
+  userId?: number | null;
 }
 
 // [ITERATION 3] Payload for CREATE (POST /api/todos). id and userId are set by the server.
