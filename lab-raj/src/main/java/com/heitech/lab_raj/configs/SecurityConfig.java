@@ -98,24 +98,34 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                // .requestMatchers("/api/v1/login").permitAll()
+                // public API
                 .requestMatchers("/api/v1/login", "/api/v1/users/register").permitAll()
-                .requestMatchers(
-                    "/v3/api-docs",
-                    "/v3/api-docs/**", 
-                    "/v3/api-docs.yaml", 
-                    "/swagger-ui.html",
-                    "/swagger-ui/**",
-                    "/swagger-resources",
-                    "/swagger-resources/**",
-                    "/configuration/ui",
-                    "/configuration/security",
-                    "/webjars/**"
-                ).permitAll()
-                .requestMatchers("/", "/index.html", "/app.js", "/static/**", "/*.html", "/*.js", "/*.css").permitAll()
-                .requestMatchers("/api/v1/todos/**", "/api/v1/users/**").authenticated()
-                .anyRequest().authenticated()
+                // swagger (keep your existing list)
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                // every other API call needs a valid JWT
+                .requestMatchers("/api/**").authenticated()
+                // everything else = Angular files and Angular routes → public
+                .anyRequest().permitAll()
             );
+            // .authorizeHttpRequests(auth -> auth
+            //     // .requestMatchers("/api/v1/login").permitAll()
+            //     .requestMatchers("/api/v1/login", "/api/v1/users/register").permitAll()
+            //     .requestMatchers(
+            //         "/v3/api-docs",
+            //         "/v3/api-docs/**", 
+            //         "/v3/api-docs.yaml", 
+            //         "/swagger-ui.html",
+            //         "/swagger-ui/**",
+            //         "/swagger-resources",
+            //         "/swagger-resources/**",
+            //         "/configuration/ui",
+            //         "/configuration/security",
+            //         "/webjars/**"
+            //     ).permitAll()
+            //     .requestMatchers("/", "/index.html", "/app.js", "/static/**", "/*.html", "/*.js", "/*.css").permitAll()
+            //     .requestMatchers("/api/v1/todos/**", "/api/v1/users/**").authenticated()
+            //     .anyRequest().authenticated()
+            // );
 
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

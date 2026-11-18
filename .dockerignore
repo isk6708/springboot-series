@@ -1,0 +1,20 @@
+# git & IDE
+.git
+**/.vscode
+**/.idea
+
+# Angular
+**/node_modules
+**/dist
+**/.angular
+
+# Spring Boot
+**/target
+**/*.db
+
+# Other folders / files not needed in the image
+lab-raj-app
+*.pdf
+*.pptx
+*.txt
+**/*.md
