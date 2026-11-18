@@ -1,6 +1,5 @@
 package com.heitech.lab_raj.configs;
 
-
 import com.heitech.lab_raj.services.LoginService;
 import com.heitech.lab_raj.filters.JwtRequestFilter;
 import lombok.AllArgsConstructor;
@@ -15,11 +14,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-// Added for Swagger OpenAPI security configuration setup
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -34,12 +33,13 @@ public class SecurityConfig {
 
     private final LoginService loginService;
     private final JwtRequestFilter jwtFilter;
-    private final PasswordEncoder passwordEncoder; // Injected from AppConfig cleanly
 
-    /**
-     * Swagger OpenAPI Configuration
-     * Enables the global "Authorize" paddock button to pass Bearer tokens to secure routes.
-     */
+    // Marked static so Spring creates it before SecurityConfig's constructor runs, avoiding circular dependencies
+    @Bean
+    public static PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Bean
     public OpenAPI customOpenAPI() {
         final String securitySchemeName = "bearerAuth";
@@ -49,9 +49,7 @@ public class SecurityConfig {
                         .title("Heitech Demo API Console")
                         .version("1.0.0")
                         .description("Administrative backend systems configuration documentation."))
-                // Automatically flags all endpoints documented in Swagger to require the authorization padlocks
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
-                // Declares the structure as an HTTP Bearer header injection scheme
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName,
                                 new SecurityScheme()
@@ -62,27 +60,18 @@ public class SecurityConfig {
                         ));
     }
 
-    /**
-     * Explicit authentication provider registration.
-     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(loginService);
-        authProvider.setPasswordEncoder(passwordEncoder);
+        authProvider.setPasswordEncoder(passwordEncoder()); // Calls the @Bean method directly
         return authProvider;
     }
 
-    /**
-     * Exposes the AuthenticationManager Bean.
-     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    /**
-     * Component-based Security Filter Chain definition.
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -93,11 +82,6 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/v1/login").permitAll()
-                // .requestMatchers("/api/v1/pengguna/register").permitAll()
-                // ADDED: Permits public GET/search access to standard user listings without token validation
-                // .requestMatchers("/api/v1/users").permitAll()
-                // .requestMatchers("/api/v1/pengguna/search").permitAll()
-                
                 .requestMatchers(
                     "/v3/api-docs",
                     "/v3/api-docs/**", 
@@ -110,13 +94,8 @@ public class SecurityConfig {
                     "/configuration/security",
                     "/webjars/**"
                 ).permitAll()
-                // FIX: Add this line to allow your browser to load index.html, app.js, and CSS files
                 .requestMatchers("/", "/index.html", "/app.js", "/static/**", "/*.html", "/*.js", "/*.css").permitAll()
-    
-                // Matches endpoints cleanly to catch any route mutations
-                .requestMatchers("/api/v1/todos", "/api/v1/user/**").authenticated()
-                .requestMatchers("/api/v1/todos", "/api/v1/user/**").authenticated()
-                
+                .requestMatchers("/api/v1/todos/**", "/api/v1/users/**").authenticated()
                 .anyRequest().authenticated()
             );
 
@@ -126,4 +105,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-
